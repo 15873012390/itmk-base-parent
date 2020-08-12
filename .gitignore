@@ -1,0 +1,3 @@
+# Project exclude paths
+/itmk-base-common/target/
+/itmk-base-web/target/
