@@ -1,6 +1,4 @@
-#端口号配置
-server:
-  port: 8089
+
 #数据库连接配置
 spring:
   profiles:
@@ -17,4 +15,50 @@ jwt:
   expiration: 3000000
 itmk:
   loginUrl: /api/user/login
-  imgUrl: /api/user/image
+  imgUrl: /api/user/
+jpa:
+  database: mysql
+  database-platform: org.hibernate.dialect.MySQL5Dialect
+  show-sql: true
+  hibernate:
+    naming:
+      physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+#端口号配置
+server:
+  port: 8089
+  tomcat:
+    uri-encoding: UTF-8
+
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  config-locations: classpath:config.xml
+  type-aliases-package: com.zktr.crmproject.pojos
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+mapper:
+  plugin: tk.mybatis.mapper.generator.MapperPlugin
+  Mapper: tk.mybatis.mapper.common.Mappers
+  not-empty: false
+  identity: MYSQL
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+http:
+  encoding:
+    charset: UTF-8
+
+#文件保存位置
+uploadFile:
+  resourceHandler: /uploadImgFiles/**   #请求 url 中的资源映射
+  location: E:/PL/uploadImgFiles/ #自定义上传文件本地保存路径
