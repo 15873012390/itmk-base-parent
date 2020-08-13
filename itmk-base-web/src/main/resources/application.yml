@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/itmk-system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
-    password: root2020
+    password: root2019
 #jwt配置
 jwt:
   secret: com.itmk
@@ -38,7 +38,7 @@ server:
 mybatis:
   mapper-locations: classpath:mapping/*.xml
   config-locations: classpath:config.xml
-  type-aliases-package: com.zktr.crmproject.pojos
+  type-aliases-package: com.itmk.system.entity
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
