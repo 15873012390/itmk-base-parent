@@ -15,7 +15,7 @@ jwt:
   expiration: 3000000
 itmk:
   loginUrl: /api/user/login
-  imgUrl: /api/user/
+  imgUrl: /api/user/image
 jpa:
   database: mysql
   database-platform: org.hibernate.dialect.MySQL5Dialect

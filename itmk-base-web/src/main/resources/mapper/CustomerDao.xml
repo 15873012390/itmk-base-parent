@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.system.mapper.CustomerDao">
+  <resultMap id="BaseResultMap" type="com.itmk.system.entity.Customer">
+    <id column="cus_id" jdbcType="INTEGER" property="cusId" />
+    <result column="cus_name" jdbcType="VARCHAR" property="cusName" />
+    <result column="u_id" jdbcType="INTEGER" property="uId" />
+    <result column="cus_level" jdbcType="VARCHAR" property="cusLevel" />
+    <result column="cus_addr" jdbcType="VARCHAR" property="cusAddr" />
+    <result column="cus_tel" jdbcType="VARCHAR" property="cusTel" />
+    <result column="cus_source" jdbcType="VARCHAR" property="cusSource" />
+    <result column="cus_creation_time" jdbcType="TIMESTAMP" property="cusCreationTime" />
+    <result column="cus_update_time" jdbcType="TIMESTAMP" property="cusUpdateTime" />
+    <result column="cus_credit" jdbcType="VARCHAR" property="cusCredit" />
+    <result column="cus_zip" jdbcType="VARCHAR" property="cusZip" />
+    <result column="cus_fax" jdbcType="VARCHAR" property="cusFax" />
+    <result column="cus_life_cycle" jdbcType="VARCHAR" property="cusLifeCycle" />
+    <result column="cus_country" jdbcType="VARCHAR" property="cusCountry" />
+    <result column="cus_province" jdbcType="VARCHAR" property="cusProvince" />
+    <result column="cus_city" jdbcType="VARCHAR" property="cusCity" />
+    <result column="cus_district" jdbcType="VARCHAR" property="cusDistrict" />
+    <result column="cus_state" jdbcType="VARCHAR" property="cusState" />
+    <result column="cus_grading" jdbcType="VARCHAR" property="cusGrading" />
+    <result column="cus_remarks" jdbcType="VARCHAR" property="cusRemarks" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cus_id, cus_name, u_id, cus_level, cus_addr, cus_tel, cus_source, cus_creation_time, 
+    cus_update_time, cus_credit, cus_zip, cus_fax, cus_life_cycle, cus_country, cus_province, 
+    cus_city, cus_district, cus_state, cus_grading, cus_remarks
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    where cus_id = #{cusId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from customer
+    where cus_id = #{cusId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="cus_id" keyProperty="cusId" parameterType="com.itmk.system.entity.Customer" useGeneratedKeys="true">
+    insert into customer (cus_name, u_id, cus_level, 
+      cus_addr, cus_tel, cus_source, 
+      cus_creation_time, cus_update_time, cus_credit, 
+      cus_zip, cus_fax, cus_life_cycle, 
+      cus_country, cus_province, cus_city, 
+      cus_district, cus_state, cus_grading, 
+      cus_remarks)
+    values (#{cusName,jdbcType=VARCHAR}, #{uId,jdbcType=INTEGER}, #{cusLevel,jdbcType=VARCHAR}, 
+      #{cusAddr,jdbcType=VARCHAR}, #{cusTel,jdbcType=VARCHAR}, #{cusSource,jdbcType=VARCHAR}, 
+      #{cusCreationTime,jdbcType=TIMESTAMP}, #{cusUpdateTime,jdbcType=TIMESTAMP}, #{cusCredit,jdbcType=VARCHAR}, 
+      #{cusZip,jdbcType=VARCHAR}, #{cusFax,jdbcType=VARCHAR}, #{cusLifeCycle,jdbcType=VARCHAR}, 
+      #{cusCountry,jdbcType=VARCHAR}, #{cusProvince,jdbcType=VARCHAR}, #{cusCity,jdbcType=VARCHAR}, 
+      #{cusDistrict,jdbcType=VARCHAR}, #{cusState,jdbcType=VARCHAR}, #{cusGrading,jdbcType=VARCHAR}, 
+      #{cusRemarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="cus_id" keyProperty="cusId" parameterType="com.itmk.system.entity.Customer" useGeneratedKeys="true">
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cusName != null">
+        cus_name,
+      </if>
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="cusLevel != null">
+        cus_level,
+      </if>
+      <if test="cusAddr != null">
+        cus_addr,
+      </if>
+      <if test="cusTel != null">
+        cus_tel,
+      </if>
+      <if test="cusSource != null">
+        cus_source,
+      </if>
+      <if test="cusCreationTime != null">
+        cus_creation_time,
+      </if>
+      <if test="cusUpdateTime != null">
+        cus_update_time,
+      </if>
+      <if test="cusCredit != null">
+        cus_credit,
+      </if>
+      <if test="cusZip != null">
+        cus_zip,
+      </if>
+      <if test="cusFax != null">
+        cus_fax,
+      </if>
+      <if test="cusLifeCycle != null">
+        cus_life_cycle,
+      </if>
+      <if test="cusCountry != null">
+        cus_country,
+      </if>
+      <if test="cusProvince != null">
+        cus_province,
+      </if>
+      <if test="cusCity != null">
+        cus_city,
+      </if>
+      <if test="cusDistrict != null">
+        cus_district,
+      </if>
+      <if test="cusState != null">
+        cus_state,
+      </if>
+      <if test="cusGrading != null">
+        cus_grading,
+      </if>
+      <if test="cusRemarks != null">
+        cus_remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cusName != null">
+        #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="uId != null">
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="cusLevel != null">
+        #{cusLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="cusAddr != null">
+        #{cusAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="cusTel != null">
+        #{cusTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cusSource != null">
+        #{cusSource,jdbcType=VARCHAR},
+      </if>
+      <if test="cusCreationTime != null">
+        #{cusCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cusUpdateTime != null">
+        #{cusUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cusCredit != null">
+        #{cusCredit,jdbcType=VARCHAR},
+      </if>
+      <if test="cusZip != null">
+        #{cusZip,jdbcType=VARCHAR},
+      </if>
+      <if test="cusFax != null">
+        #{cusFax,jdbcType=VARCHAR},
+      </if>
+      <if test="cusLifeCycle != null">
+        #{cusLifeCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="cusCountry != null">
+        #{cusCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="cusProvince != null">
+        #{cusProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cusCity != null">
+        #{cusCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cusDistrict != null">
+        #{cusDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="cusState != null">
+        #{cusState,jdbcType=VARCHAR},
+      </if>
+      <if test="cusGrading != null">
+        #{cusGrading,jdbcType=VARCHAR},
+      </if>
+      <if test="cusRemarks != null">
+        #{cusRemarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itmk.system.entity.Customer">
+    update customer
+    <set>
+      <if test="cusName != null">
+        cus_name = #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="uId != null">
+        u_id = #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="cusLevel != null">
+        cus_level = #{cusLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="cusAddr != null">
+        cus_addr = #{cusAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="cusTel != null">
+        cus_tel = #{cusTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cusSource != null">
+        cus_source = #{cusSource,jdbcType=VARCHAR},
+      </if>
+      <if test="cusCreationTime != null">
+        cus_creation_time = #{cusCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cusUpdateTime != null">
+        cus_update_time = #{cusUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cusCredit != null">
+        cus_credit = #{cusCredit,jdbcType=VARCHAR},
+      </if>
+      <if test="cusZip != null">
+        cus_zip = #{cusZip,jdbcType=VARCHAR},
+      </if>
+      <if test="cusFax != null">
+        cus_fax = #{cusFax,jdbcType=VARCHAR},
+      </if>
+      <if test="cusLifeCycle != null">
+        cus_life_cycle = #{cusLifeCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="cusCountry != null">
+        cus_country = #{cusCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="cusProvince != null">
+        cus_province = #{cusProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cusCity != null">
+        cus_city = #{cusCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cusDistrict != null">
+        cus_district = #{cusDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="cusState != null">
+        cus_state = #{cusState,jdbcType=VARCHAR},
+      </if>
+      <if test="cusGrading != null">
+        cus_grading = #{cusGrading,jdbcType=VARCHAR},
+      </if>
+      <if test="cusRemarks != null">
+        cus_remarks = #{cusRemarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cus_id = #{cusId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itmk.system.entity.Customer">
+    update customer
+    set cus_name = #{cusName,jdbcType=VARCHAR},
+      u_id = #{uId,jdbcType=INTEGER},
+      cus_level = #{cusLevel,jdbcType=VARCHAR},
+      cus_addr = #{cusAddr,jdbcType=VARCHAR},
+      cus_tel = #{cusTel,jdbcType=VARCHAR},
+      cus_source = #{cusSource,jdbcType=VARCHAR},
+      cus_creation_time = #{cusCreationTime,jdbcType=TIMESTAMP},
+      cus_update_time = #{cusUpdateTime,jdbcType=TIMESTAMP},
+      cus_credit = #{cusCredit,jdbcType=VARCHAR},
+      cus_zip = #{cusZip,jdbcType=VARCHAR},
+      cus_fax = #{cusFax,jdbcType=VARCHAR},
+      cus_life_cycle = #{cusLifeCycle,jdbcType=VARCHAR},
+      cus_country = #{cusCountry,jdbcType=VARCHAR},
+      cus_province = #{cusProvince,jdbcType=VARCHAR},
+      cus_city = #{cusCity,jdbcType=VARCHAR},
+      cus_district = #{cusDistrict,jdbcType=VARCHAR},
+      cus_state = #{cusState,jdbcType=VARCHAR},
+      cus_grading = #{cusGrading,jdbcType=VARCHAR},
+      cus_remarks = #{cusRemarks,jdbcType=VARCHAR}
+    where cus_id = #{cusId,jdbcType=INTEGER}
+  </update>
+</mapper>
