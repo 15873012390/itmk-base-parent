@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itmk.system.mapper.CustomerDao">
-  <resultMap id="BaseResultMap" type="com.itmk.system.entity.Customer">
+  <resultMap id="customerMap" type="com.itmk.system.entity.Customer">
     <id column="cus_id" jdbcType="INTEGER" property="cusId" />
     <result column="cus_name" jdbcType="VARCHAR" property="cusName" />
     <result column="u_id" jdbcType="INTEGER" property="uId" />
@@ -28,7 +28,10 @@
     cus_update_time, cus_credit, cus_zip, cus_fax, cus_life_cycle, cus_country, cus_province, 
     cus_city, cus_district, cus_state, cus_grading, cus_remarks
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="queryAllCustomer" resultMap="customerMap">
+        select * from customer
+    </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="customerMap">
     select 
     <include refid="Base_Column_List" />
     from customer
