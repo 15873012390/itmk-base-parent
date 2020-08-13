@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.system.mapper.ProductDao">
+  <resultMap id="BaseResultMap" type="com.itmk.system.entity.Product">
+    <id column="pro_id" jdbcType="INTEGER" property="proId" />
+    <result column="cla_id" jdbcType="INTEGER" property="claId" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="pro_image" jdbcType="VARCHAR" property="proImage" />
+    <result column="pro_mode" jdbcType="VARCHAR" property="proMode" />
+    <result column="pro_state" jdbcType="VARCHAR" property="proState" />
+    <result column="pro_price" jdbcType="DECIMAL" property="proPrice" />
+    <result column="pro_costprice" jdbcType="DECIMAL" property="proCostprice" />
+    <result column="pro_unit" jdbcType="VARCHAR" property="proUnit" />
+    <result column="pro_barcode" jdbcType="INTEGER" property="proBarcode" />
+    <result column="pro_weight" jdbcType="VARCHAR" property="proWeight" />
+    <result column="pro_group" jdbcType="VARCHAR" property="proGroup" />
+    <result column="pro_date" jdbcType="TIMESTAMP" property="proDate" />
+    <result column="durable_years" jdbcType="VARCHAR" property="durableYears" />
+    <result column="pro_remark" jdbcType="VARCHAR" property="proRemark" />
+    <result column="pro_del_state" jdbcType="INTEGER" property="proDelState" />
+    <result column="pro_explain" jdbcType="VARCHAR" property="proExplain" />
+    <result column="pro_detailed_profile" jdbcType="VARCHAR" property="proDetailedProfile" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pro_id, cla_id, pro_name, pro_image, pro_mode, pro_state, pro_price, pro_costprice, 
+    pro_unit, pro_barcode, pro_weight, pro_group, pro_date, durable_years, pro_remark, 
+    pro_del_state, pro_explain, pro_detailed_profile
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="pro_id" keyProperty="proId" parameterType="com.itmk.system.entity.Product" useGeneratedKeys="true">
+    insert into product (cla_id, pro_name, pro_image, 
+      pro_mode, pro_state, pro_price, 
+      pro_costprice, pro_unit, pro_barcode, 
+      pro_weight, pro_group, pro_date, 
+      durable_years, pro_remark, pro_del_state, 
+      pro_explain, pro_detailed_profile)
+    values (#{claId,jdbcType=INTEGER}, #{proName,jdbcType=VARCHAR}, #{proImage,jdbcType=VARCHAR}, 
+      #{proMode,jdbcType=VARCHAR}, #{proState,jdbcType=VARCHAR}, #{proPrice,jdbcType=DECIMAL}, 
+      #{proCostprice,jdbcType=DECIMAL}, #{proUnit,jdbcType=VARCHAR}, #{proBarcode,jdbcType=INTEGER}, 
+      #{proWeight,jdbcType=VARCHAR}, #{proGroup,jdbcType=VARCHAR}, #{proDate,jdbcType=TIMESTAMP}, 
+      #{durableYears,jdbcType=VARCHAR}, #{proRemark,jdbcType=VARCHAR}, #{proDelState,jdbcType=INTEGER}, 
+      #{proExplain,jdbcType=VARCHAR}, #{proDetailedProfile,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="pro_id" keyProperty="proId" parameterType="com.itmk.system.entity.Product" useGeneratedKeys="true">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="claId != null">
+        cla_id,
+      </if>
+      <if test="proName != null">
+        pro_name,
+      </if>
+      <if test="proImage != null">
+        pro_image,
+      </if>
+      <if test="proMode != null">
+        pro_mode,
+      </if>
+      <if test="proState != null">
+        pro_state,
+      </if>
+      <if test="proPrice != null">
+        pro_price,
+      </if>
+      <if test="proCostprice != null">
+        pro_costprice,
+      </if>
+      <if test="proUnit != null">
+        pro_unit,
+      </if>
+      <if test="proBarcode != null">
+        pro_barcode,
+      </if>
+      <if test="proWeight != null">
+        pro_weight,
+      </if>
+      <if test="proGroup != null">
+        pro_group,
+      </if>
+      <if test="proDate != null">
+        pro_date,
+      </if>
+      <if test="durableYears != null">
+        durable_years,
+      </if>
+      <if test="proRemark != null">
+        pro_remark,
+      </if>
+      <if test="proDelState != null">
+        pro_del_state,
+      </if>
+      <if test="proExplain != null">
+        pro_explain,
+      </if>
+      <if test="proDetailedProfile != null">
+        pro_detailed_profile,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="claId != null">
+        #{claId,jdbcType=INTEGER},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proImage != null">
+        #{proImage,jdbcType=VARCHAR},
+      </if>
+      <if test="proMode != null">
+        #{proMode,jdbcType=VARCHAR},
+      </if>
+      <if test="proState != null">
+        #{proState,jdbcType=VARCHAR},
+      </if>
+      <if test="proPrice != null">
+        #{proPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proCostprice != null">
+        #{proCostprice,jdbcType=DECIMAL},
+      </if>
+      <if test="proUnit != null">
+        #{proUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="proBarcode != null">
+        #{proBarcode,jdbcType=INTEGER},
+      </if>
+      <if test="proWeight != null">
+        #{proWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="proGroup != null">
+        #{proGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="proDate != null">
+        #{proDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="durableYears != null">
+        #{durableYears,jdbcType=VARCHAR},
+      </if>
+      <if test="proRemark != null">
+        #{proRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="proDelState != null">
+        #{proDelState,jdbcType=INTEGER},
+      </if>
+      <if test="proExplain != null">
+        #{proExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="proDetailedProfile != null">
+        #{proDetailedProfile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itmk.system.entity.Product">
+    update product
+    <set>
+      <if test="claId != null">
+        cla_id = #{claId,jdbcType=INTEGER},
+      </if>
+      <if test="proName != null">
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proImage != null">
+        pro_image = #{proImage,jdbcType=VARCHAR},
+      </if>
+      <if test="proMode != null">
+        pro_mode = #{proMode,jdbcType=VARCHAR},
+      </if>
+      <if test="proState != null">
+        pro_state = #{proState,jdbcType=VARCHAR},
+      </if>
+      <if test="proPrice != null">
+        pro_price = #{proPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proCostprice != null">
+        pro_costprice = #{proCostprice,jdbcType=DECIMAL},
+      </if>
+      <if test="proUnit != null">
+        pro_unit = #{proUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="proBarcode != null">
+        pro_barcode = #{proBarcode,jdbcType=INTEGER},
+      </if>
+      <if test="proWeight != null">
+        pro_weight = #{proWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="proGroup != null">
+        pro_group = #{proGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="proDate != null">
+        pro_date = #{proDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="durableYears != null">
+        durable_years = #{durableYears,jdbcType=VARCHAR},
+      </if>
+      <if test="proRemark != null">
+        pro_remark = #{proRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="proDelState != null">
+        pro_del_state = #{proDelState,jdbcType=INTEGER},
+      </if>
+      <if test="proExplain != null">
+        pro_explain = #{proExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="proDetailedProfile != null">
+        pro_detailed_profile = #{proDetailedProfile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itmk.system.entity.Product">
+    update product
+    set cla_id = #{claId,jdbcType=INTEGER},
+      pro_name = #{proName,jdbcType=VARCHAR},
+      pro_image = #{proImage,jdbcType=VARCHAR},
+      pro_mode = #{proMode,jdbcType=VARCHAR},
+      pro_state = #{proState,jdbcType=VARCHAR},
+      pro_price = #{proPrice,jdbcType=DECIMAL},
+      pro_costprice = #{proCostprice,jdbcType=DECIMAL},
+      pro_unit = #{proUnit,jdbcType=VARCHAR},
+      pro_barcode = #{proBarcode,jdbcType=INTEGER},
+      pro_weight = #{proWeight,jdbcType=VARCHAR},
+      pro_group = #{proGroup,jdbcType=VARCHAR},
+      pro_date = #{proDate,jdbcType=TIMESTAMP},
+      durable_years = #{durableYears,jdbcType=VARCHAR},
+      pro_remark = #{proRemark,jdbcType=VARCHAR},
+      pro_del_state = #{proDelState,jdbcType=INTEGER},
+      pro_explain = #{proExplain,jdbcType=VARCHAR},
+      pro_detailed_profile = #{proDetailedProfile,jdbcType=VARCHAR}
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </update>
+</mapper>
