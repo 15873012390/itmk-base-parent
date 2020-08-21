@@ -2,6 +2,9 @@ package com.itmk.system.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -9,7 +12,10 @@ import lombok.Data;
  * @author 
  */
 @Data
+@TableName("customer")
 public class Customer implements Serializable {
+    //主键
+    @TableId
     /**
      * 客户Id
      */

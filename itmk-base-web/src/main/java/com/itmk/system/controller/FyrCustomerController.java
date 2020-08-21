@@ -97,7 +97,6 @@ public class FyrCustomerController {
      * */
     @RequestMapping(value = "deleteCustomerById",method = RequestMethod.POST)
     public ResultVo deleteCustomerById(@RequestBody Customer customer){
-
         boolean b=customerService.removeById(customer.getCusId());
         if(b){
             return ResultUtils.success("删除客户成功");
@@ -105,4 +104,16 @@ public class FyrCustomerController {
             return ResultUtils.error("删除客户失败");
         }
     }
+    /**
+     * 通过id查询客户
+     * @param parm
+     * @return
+     */
+    @PostMapping("getCustomerById")
+    public ResultVo getCustomerById(@RequestBody Customer parm){
+
+        return ResultUtils.success("通过id查询客户成功",customerService.getById(parm.getCusId()));
+    }
+
+
 }
