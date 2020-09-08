@@ -14,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -154,5 +151,13 @@ public class UserController {
         }else{
             return ResultUtils.error("删除用户失败");
         }
+    }
+    /*
+    * 查询所有用户
+    * */
+    @GetMapping("query_all_user")
+    public ResultVo queryAllUser(){
+
+        return ResultUtils.success("查询成功",this.userService.list());
     }
 }
