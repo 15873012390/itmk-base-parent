@@ -70,11 +70,12 @@ public class RoleController {
         List<Permission> permission = null;
         //1.查询当前用户的所有权限
         SysUser user = userService.getById(userId);
-        if(StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")){
+        /*if(StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")){
             permission = permissionService.list();
         }else{
             permission = permissionService.getPermissionListByUserId(userId);
-        }
+        }*/
+        permission = permissionService.list();//拿到全部权限
         //查询角色原来的数据，设置为选中
         List<Permission> permissionListByRoleId = permissionService.getPermissionListByRoleId(perVo.getRoleId());
         //组装成树数据
