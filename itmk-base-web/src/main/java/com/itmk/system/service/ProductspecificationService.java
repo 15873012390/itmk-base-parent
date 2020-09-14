@@ -3,10 +3,7 @@ package com.itmk.system.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.itmk.system.entity.Productspecification;
 import com.itmk.system.vo.Pager;
-import com.itmk.system.vo.ProductSpecificationVo;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /*
  * 规格业务接口
