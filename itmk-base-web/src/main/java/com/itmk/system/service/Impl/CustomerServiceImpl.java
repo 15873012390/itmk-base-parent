@@ -85,6 +85,11 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         return new Pager<Customer>(pageInfo.getTotal(),pageInfo.getList());
     }
 
+    @Override
+    public com.itmk.system.entity.mybatis.Customer queryCustomerDetailsById(Integer cusId) {
+        return this.customerDao.queryCustomerDetailsById(cusId);
+    }
+
     /**
      * 高级查询客户
      * @param advancedQueryCustomerDataVo
@@ -131,13 +136,10 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
      * @param customertransfer
      */
     public void saveCustomerTransfer(Customertransfer customertransfer){
-        log.info("sssss"+customertransfer.toString());
         com.itmk.system.entity.mybatis.Customer customer=getCustomerById(customertransfer.getCustomer().getCusId());
         customer.setJpaSysUser(customertransfer.getUser2());
         customer.setCusUpdateTime(customertransfer.getCtTime());
-        log.info("ssssss"+customertransfer);
         this.saveCustomer(customer);
-        log.info("sssssss"+customertransfer);
         this.lxmJpaCustomerTransferDao.save(customertransfer);
     }
     /**

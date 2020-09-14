@@ -1,49 +1,94 @@
 package com.itmk.system.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
+import javax.persistence.*;
+import java.util.List;
 
-import java.io.Serializable;
-
-/**
- * productspecification
- * @author 
- */
-@Data
-@TableName("productspecification")
-public class Productspecification implements Serializable {
-    /**
-     * 规格id
-     */
-    //主键
-    @TableId
-    private Integer speId;
-
-    /**
-     * 产品id
-     */
-    private Integer proId;
-
-    /**
-     * 产品名称(基准规格产品、其他规格产品)
-     */
+@Entity
+public class Productspecification {
+    private int speId;
     private String proName;
-
-    /**
-     * 规格
-     */
     private String speSpecification;
-
-    /**
-     * 单位
-     */
     private String speUnit;
-
-    /**
-     * 单位换算
-     */
     private Integer speUnitConversion;
+    private Product product;
+    private List<Stock> stocks;
 
-    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "spe_id")
+    public int getSpeId() {
+        return speId;
+    }
+
+    public void setSpeId(int speId) {
+        this.speId = speId;
+    }
+
+    @Basic
+    @Column(name = "pro_name")
+    public String getProName() {
+        return proName;
+    }
+
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
+
+    @Basic
+    @Column(name = "spe_specification")
+    public String getSpeSpecification() {
+        return speSpecification;
+    }
+
+    public void setSpeSpecification(String speSpecification) {
+        this.speSpecification = speSpecification;
+    }
+
+    @Basic
+    @Column(name = "spe_unit")
+    public String getSpeUnit() {
+        return speUnit;
+    }
+
+    public void setSpeUnit(String speUnit) {
+        this.speUnit = speUnit;
+    }
+
+    @Basic
+    @Column(name = "spe_unit_conversion")
+    public Integer getSpeUnitConversion() {
+        return speUnitConversion;
+    }
+
+    public void setSpeUnitConversion(Integer speUnitConversion) {
+        this.speUnitConversion = speUnitConversion;
+    }
+
+    @ManyToOne
+    @JoinColumn(name="pro_id",referencedColumnName = "pro_id")
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    @OneToMany(mappedBy = "productspecification",cascade = CascadeType.ALL)
+    public List<Stock> getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(List<Stock> stocks) {
+        this.stocks = stocks;
+    }
+    @Override
+    public String toString() {
+        return "Productspecification{" +
+                "speId=" + speId +
+                ", proName='" + proName + '\'' +
+                ", speSpecification='" + speSpecification + '\'' +
+                ", speUnit='" + speUnit + '\'' +
+                ", speUnitConversion=" + speUnitConversion +
+                '}';
+    }
 }

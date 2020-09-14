@@ -46,4 +46,6 @@ public interface CustomerDao {
     public List<Customer> searchCustomerById(Integer cusId);
     //搜索名字查询客户
     public List<Customer> queryCustomerByName(String cusName, Integer currentPage, Integer pageSize);
+    //根据cusId查询客户详情(左)
+    public com.itmk.system.entity.mybatis.Customer queryCustomerDetailsById(Integer cusId);
 }

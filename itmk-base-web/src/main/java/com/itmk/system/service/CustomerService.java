@@ -24,7 +24,8 @@ public interface CustomerService extends IService<Customer> {
     public void saveCustomer(JpaCustomer customer);
     //根据数据查询客户
     public Pager<Customer> queryCustomerByShuJu(String value, Integer currentPage, Integer pageSize);
-
+    //根据cusId查询客户详情(左)
+    public com.itmk.system.entity.mybatis.Customer queryCustomerDetailsById(Integer cusId);
     //高级查询客户
     public Pager<Customer> queryCustomerSenior(AdvancedQueryCustomerDataVo advancedQueryCustomerDataVo) ;
 

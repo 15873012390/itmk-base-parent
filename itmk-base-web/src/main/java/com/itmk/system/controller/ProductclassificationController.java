@@ -11,10 +11,7 @@ import com.itmk.system.vo.ProductclassificationVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 分类管理控制器
@@ -95,5 +92,14 @@ public class ProductclassificationController {
         }else{
             return ResultUtils.error("删除类别失败");
         }
+    }
+
+    /**
+     * 查询全部状态正常的类别
+     * @return
+     */
+    @GetMapping("/query_all_productClassification")
+    public ResultVo queryAllProductClassification(){
+        return ResultUtils.success("查询成功",this.productclassificationService.queryAllProductClassification());
     }
 }

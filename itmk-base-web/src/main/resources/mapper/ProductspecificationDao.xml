@@ -1,98 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itmk.system.mapper.ProductspecificationDao">
-  <resultMap id="BaseResultMap" type="com.itmk.system.entity.Productspecification">
-    <id column="spe_id" jdbcType="INTEGER" property="speId" />
-    <result column="pro_id" jdbcType="INTEGER" property="proId" />
-    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
-    <result column="spe_specification" jdbcType="VARCHAR" property="speSpecification" />
-    <result column="spe_unit" jdbcType="VARCHAR" property="speUnit" />
-    <result column="spe_unit_conversion" jdbcType="INTEGER" property="speUnitConversion" />
+  <resultMap id="specificationMap" type="com.itmk.system.entity.Productspecification">
+    <id property="speId" column="spe_id"></id>
+    <result property="proName" column="pro_name"></result>
+    <result property="speSpecification" column="spe_specification"></result>
+    <result property="speUnit" column="spe_unit" ></result>
+    <result property="speUnitConversion" column="spe_unit_conversion"></result>
+
+    <association property="product" javaType="com.itmk.system.entity.Product">
+      <id property="proId" column="pro_id"></id>
+      <result property="proName" column="pro_name"></result>
+      <result property="proDate" column="pro_date"></result>
+      <result property="proPrice" column="pro_rice"></result>
+      <result property="proCostprice" column="pro_costprice"></result>
+
+      <association property="productclassification" javaType="com.itmk.system.entity.Productclassification">
+        <id column="cla_id" property="claId"></id>
+        <result column="cla_name" property="claName"></result>
+      </association>
+    </association>
   </resultMap>
-  <sql id="Base_Column_List">
-    spe_id, pro_id, pro_name, spe_specification, spe_unit, spe_unit_conversion
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from productspecification
-    where spe_id = #{speId,jdbcType=INTEGER}
+  <insert id="insertSpeProduct">
+        insert into productspecification(pro_id,pro_name,spe_specification,spe_unit,spe_unit_conversion) values(#{product.proId},#{proName},#{speSpecification},#{speUnit},#{speUnitConversion})
+  </insert>
+    <delete id="delBySpeId"> delete from productspecification  where spe_id=#{speId}</delete>
+    <select id="queryProductspecificationByProId" resultMap="specificationMap">
+    SELECT s.spe_id,s.pro_id,s.pro_name,s.spe_specification,s.spe_unit,s.spe_unit_conversion,p.pro_date
+        FROM
+        productspecification s
+        INNER JOIN
+        product p
+        ON s.pro_id=p.pro_id
+        WHERE p.pro_id=#{proid} AND p.pro_del_state=1
+        ORDER BY s.spe_id DESC
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from productspecification
-    where spe_id = #{speId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="spe_id" keyProperty="speId" parameterType="com.itmk.system.entity.Productspecification" useGeneratedKeys="true">
-    insert into productspecification (pro_id, pro_name, spe_specification, 
-      spe_unit, spe_unit_conversion)
-    values (#{proId,jdbcType=INTEGER}, #{proName,jdbcType=VARCHAR}, #{speSpecification,jdbcType=VARCHAR}, 
-      #{speUnit,jdbcType=VARCHAR}, #{speUnitConversion,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" keyColumn="spe_id" keyProperty="speId" parameterType="com.itmk.system.entity.Productspecification" useGeneratedKeys="true">
-    insert into productspecification
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="proId != null">
-        pro_id,
-      </if>
-      <if test="proName != null">
-        pro_name,
-      </if>
-      <if test="speSpecification != null">
-        spe_specification,
-      </if>
-      <if test="speUnit != null">
-        spe_unit,
-      </if>
-      <if test="speUnitConversion != null">
-        spe_unit_conversion,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="proId != null">
-        #{proId,jdbcType=INTEGER},
-      </if>
-      <if test="proName != null">
-        #{proName,jdbcType=VARCHAR},
-      </if>
-      <if test="speSpecification != null">
-        #{speSpecification,jdbcType=VARCHAR},
-      </if>
-      <if test="speUnit != null">
-        #{speUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="speUnitConversion != null">
-        #{speUnitConversion,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.itmk.system.entity.Productspecification">
-    update productspecification
-    <set>
-      <if test="proId != null">
-        pro_id = #{proId,jdbcType=INTEGER},
-      </if>
-      <if test="proName != null">
-        pro_name = #{proName,jdbcType=VARCHAR},
-      </if>
-      <if test="speSpecification != null">
-        spe_specification = #{speSpecification,jdbcType=VARCHAR},
-      </if>
-      <if test="speUnit != null">
-        spe_unit = #{speUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="speUnitConversion != null">
-        spe_unit_conversion = #{speUnitConversion,jdbcType=INTEGER},
-      </if>
-    </set>
-    where spe_id = #{speId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.itmk.system.entity.Productspecification">
-    update productspecification
-    set pro_id = #{proId,jdbcType=INTEGER},
-      pro_name = #{proName,jdbcType=VARCHAR},
-      spe_specification = #{speSpecification,jdbcType=VARCHAR},
-      spe_unit = #{speUnit,jdbcType=VARCHAR},
-      spe_unit_conversion = #{speUnitConversion,jdbcType=INTEGER}
-    where spe_id = #{speId,jdbcType=INTEGER}
-  </update>
+    <select id="queryBySepId" resultMap="specificationMap">
+        select * from productspecification where spe_id=#{speid}
+    </select>
+    <insert id="insertSpe" parameterType="com.itmk.system.vo.ProductSpecificationVo">
+        insert into productspecification(pro_id,pro_name,spe_specification,spe_unit,spe_unit_conversion) values(#{proId},#{proName},#{speSpecification},#{speUnit},#{speUnitConversion})
+    </insert>
+    <update id="updateSpe" parameterType="com.itmk.system.entity.Productspecification">
+        update productspecification set spe_specification=#{speSpecification},spe_unit=#{speUnit},spe_unit_conversion=#{speUnitConversion} where spe_id=#{speid}
+    </update>
 </mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.system.mapper.ProductclassificationDao">
+    <resultMap id="ProductClassificationMap" type="com.itmk.system.entity.Productclassification">
+        <id property="claId" column="cla_id"></id>
+        <result property="claName"  column="cla_name"></result>
+        <result property="claIdId" column="cla_id_id"></result>
+        <result property="claState" column="cla_state" ></result>
+        <result property="claDatetime" column="cla_datetime"></result>
+        <!--产品集合-->
+        <collection property="product" ofType="com.itmk.system.entity.Product">
+            <id property="proId" column="pro_id"></id>
+            <result property="proName" column="pro_name"></result>
+            <!--规格集合-->
+            <collection property="productspecification" ofType="com.itmk.system.entity.Productspecification">
+                <id property="speId" column="spe_id"></id>
+                <result property="speSpecification" column="spe_specification"></result>
+                <result property="proName" column="pro_name"></result>
+
+                <!-- 库存对象 -->
+                <collection property="stocks" ofType="com.itmk.system.entity.Stock">
+                    <id property="stockId" column="stock_id"></id>
+                    <result property="stockQuantity" column="stock_quantity"></result>
+                </collection>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!--查询状态为正常的分类-->
+    <select id="queryAllProductClassification" resultMap="ProductClassificationMap">
+       SELECT cla_id, cla_name, cla_id_id, cla_state, cla_datetime FROM productclassification WHERE cla_state='正常'
+    </select>
+
+</mapper>

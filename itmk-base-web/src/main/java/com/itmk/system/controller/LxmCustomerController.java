@@ -14,11 +14,13 @@ import com.itmk.system.service.CustomerService;
 import com.itmk.system.vo.AdvancedQueryCustomerDataVo;
 import com.itmk.system.vo.CustomerVo;
 import com.itmk.system.vo.Pager;
+import com.itmk.utils.ExcelUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -234,5 +236,43 @@ public class LxmCustomerController {
     public ResultVo addCustomerTransfer(@RequestBody Customertransfer customertransfer){
         this.customerService.saveCustomerTransfer(customertransfer);
         return ResultUtils.success("操作成功");
+    }
+
+    /**
+     * Excel导入客户
+     * @param file
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/imp_customer")
+    public String[] impCustomer(MultipartFile file){
+        List<Customer> list= ExcelUtils.importData(file,1,Customer.class);
+        String[] strings=new String[list.size()];
+        log.info("sssa"+list.get(1).getCusName());
+        if (list!=null){
+            boolean num=true;
+            //strings=TWCustomerService.CustomerExcle(list);
+            for (int i=0;i<strings.length;i++){
+                if (strings[i]!=null){
+                    num=false;
+                    log.info("sssa"+list.get(i).getCusName());
+                }
+            }
+            if (num){
+                //TWCustomerService.InsertAllCustomer(list);
+            }
+
+        }
+        return strings;
+    }
+
+    /**
+     * 根据id查询客户详情
+     * @param cusId
+     * @return
+     */
+    @GetMapping("/find_customer_details")
+    public ResultVo findCustomerDetailsById(Integer cusId){
+        return ResultUtils.success("查詢成功",this.customerService.queryCustomerDetailsById(cusId));
     }
 }

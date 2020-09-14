@@ -26,6 +26,41 @@
       <result column="username" property="username"/>
     </association>
   </resultMap>
+
+  <resultMap id="customerMap2" type="com.itmk.system.entity.mybatis.Customer">
+    <id property="cusId" column="cus_id"></id>
+    <result property="cusName" column="cus_name"></result>
+    <result property="cusAddr" column="cus_addr"></result>
+    <result property="cusTel" column="cus_tel"></result>
+    <result property="cusSource" column="cus_source"></result>
+    <result property="cusCreationTime" column="cus_creation_time"></result>
+    <result property="cusUpdateTime" column="cus_update_time"></result>
+    <result property="cusLevel" column="cus_level"></result>
+    <result property="cusCredit" column="cus_credit"></result>
+    <result property="cusZip" column="cus_zip"></result>
+    <result property="cusFax" column="cus_fax"></result>
+    <result property="cusLifeCycle" column="cus_life_cycle"></result>
+    <result property="cusCountry" column="cus_country"></result>
+    <result property="cusProvince" column="cus_province"></result>
+    <result property="cusCity" column="cus_city"></result>
+    <result property="cusDistrict" column="cus_district"></result>
+    <result property="cusState" column="cus_state"></result>
+    <result property="cusGrading" column="cus_grading"></result>
+    <result property="cusRemarks" column="cus_remarks"></result>
+    <association property="jpaSysUser" javaType="com.itmk.system.entity.jpa.JpaSysUser">
+      <id column="id" property="id"/>
+      <result column="username" property="username"/>
+    </association>
+    <collection property="contacts" ofType="com.itmk.system.entity.mybatis.Contacts">
+      <id column="con_id" property="conId"></id>
+      <result column="con_name" property="conName"/>
+      <result column="con_tel" property="conTel"/>
+      <result column="con_mobile" property="conMobile"/>
+      <result column="con_sex" property="conSex"/>
+      <result column="con_position" property="conPosition"/>
+      <result column="con_img" property="conImg"/>
+    </collection>
+  </resultMap>
   <sql id="Base_Column_List">
     cus_id, cus_name, u_id, cus_level, cus_addr, cus_tel, cus_source, cus_creation_time, 
     cus_update_time, cus_credit, cus_zip, cus_fax, cus_life_cycle, cus_country, cus_province, 
@@ -215,8 +250,29 @@
         left join sys_user u on c.u_id=u.id
         where c.cus_name like concat('%', #{cusName}, '%')
   </select>
+  <select id="queryCustomerDetailsById" resultMap="customerMap2">
+        select c.cus_id,c.cus_name,
+            c.cus_level,c.cus_addr,
+            c.cus_tel,c.cus_source,
+            c.cus_creation_time,c.cus_update_time,
+            c.cus_credit,c.cus_zip,
+            c.cus_fax,c.cus_life_cycle,
+            c.cus_country,c.cus_province,
+            c.cus_city,c.cus_district,
+            c.cus_state,c.cus_grading,
+            c.cus_remarks,u.id,
+            u.username,n.con_name,
+            n.con_tel,n.con_mobile,
+            n.con_sex,n.con_position,
+            n.con_img
+        from customer c
+        left join sys_user u on c.u_id=u.id
+        LEFT JOIN contacts n on c.cus_id=n.cus_id
+        WHERE c.cus_id=#{cusId}
+        order by c.cus_id desc
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from customer
     where cus_id = #{cusId,jdbcType=INTEGER}
   </delete>

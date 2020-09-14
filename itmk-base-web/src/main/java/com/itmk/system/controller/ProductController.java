@@ -7,14 +7,12 @@ import com.itmk.result.ResultUtils;
 import com.itmk.result.ResultVo;
 import com.itmk.system.entity.Product;
 import com.itmk.system.service.ProductService;
+import com.itmk.system.vo.ProductAdvancedSearch;
 import com.itmk.system.vo.ProductVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 产品管理控制器
@@ -25,75 +23,78 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    /*
-     * 查询产品(模糊查询，分页）
-     * */
-    @RequestMapping(value = "getProductList",method = RequestMethod.POST)
-    public ResultVo getProductList(@RequestBody ProductVo parm){
-        //条件构造器
-        QueryWrapper<Product> queryWrapper=new QueryWrapper<>();
-        if(StringUtils.isNotBlank(parm.getProName())){
-            queryWrapper.lambda().like(Product::getProName,parm.getProName());
-        }
-        //分页
-        IPage<Product> page=new Page<>();
-        page.setCurrent(parm.getCurrentPage());
-        page.setPages(parm.getPageSize());
-        IPage<Product> productIPage=productService.page(page,queryWrapper);
-        return ResultUtils.success("查询产品成功",productIPage);
+
+    /**
+     * 查询全部产品
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/query_all_product")
+    public ResultVo queryAllProduct(Integer currentPage, Integer pageSize){
+        return ResultUtils.success("查询产品成功",this.productService.queryAllProduct(currentPage, pageSize));
     }
 
-    /*
-    * 添加产品
-    * */
-    @RequestMapping(value = "addProduct",method = RequestMethod.POST)
-    public ResultVo addProduct(@RequestBody Product product){
-        //条件构造器
-        QueryWrapper<Product> queryWrapper=new QueryWrapper<>();
-        queryWrapper.lambda().eq(Product::getProName,product.getProName());
-        Product p=productService.getOne(queryWrapper);
-        if(p!=null){
-            return ResultUtils.error("该产品名称已存在");
-        }
-        Boolean b=productService.save(product);
-        if(b){
-            return ResultUtils.success("添加产品成功");
-        }else {
-            return  ResultUtils.error("添加产品失败");
-        }
+    /**
+     * 通过下拉框数据搜索产品
+     * @param value
+     * @param input
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/search_product_by_shuJu")
+    public ResultVo seachProductByShuJu(String value,String input,Integer currentPage, Integer pageSize){
+        return ResultUtils.success("查询产品成功",this.productService.seachProductByShuJu(value,input,currentPage, pageSize));
     }
 
-    /*
-     * 编辑产品
-     * */
-    @RequestMapping(value = "updateProduct",method = RequestMethod.POST)
-    public ResultVo updateProduct(@RequestBody Product product){
-        //条件构造器
-        QueryWrapper<Product> queryWrapper=new QueryWrapper<>();
-        queryWrapper.lambda().eq(Product::getProName,product.getProName());
-        queryWrapper.lambda().ne(Product::getProId,product.getProId());
-        Product p=productService.getOne(queryWrapper);
-        if(p!=null){
-            return ResultUtils.error("该产品名称已存在");
-        }
-        Boolean b=productService.updateById(product);
-        if(b){
-            return ResultUtils.success("修改产品成功");
-        }else {
-            return  ResultUtils.error("修改产品失败");
-        }
+    /**
+     * 高级搜索产品
+     * @param productAdvancedSearch
+     * @return
+     */
+    @PostMapping("/product_advancedSearch")
+    public ResultVo productAdvancedSearch(@RequestBody ProductAdvancedSearch productAdvancedSearch){
+        return ResultUtils.success("查询产品成功",this.productService.productAdvancedSearch(productAdvancedSearch));
     }
 
-    /*
-    * 删除产品
-    * */
-    @RequestMapping(value = "deleteProductById",method = RequestMethod.POST)
-    public ResultVo deleteProductById(@RequestBody Product product){
-        Boolean b=productService.removeById(product);
-        if(b){
-            return ResultUtils.success("删除产品成功");
-        }else{
-            return ResultUtils.error("删除产品失败");
-        }
+    /**
+     * 删除产品通过id(逻辑删除，修改状态)
+     * @param proid
+     * @return
+     */
+    @DeleteMapping("/delete_product_by_id")
+    public ResultVo deleteProductById(Integer proid){
+        this.productService.deleteProudctById(proid);
+        return ResultUtils.success("删除成功");
+    }
+
+    /**
+     * 通过id查找产品
+     * @param proid
+     * @return
+     */
+    @GetMapping("/find_product_by_id")
+    public ResultVo findProductById(Integer proid){
+        return ResultUtils.success("查询成功",this.productService.findProductById(proid));
+    }
+
+    /**
+     * 新增/编辑产品
+     * @param product
+     * @return
+     */
+    @PostMapping("/add_update_product")
+    public ResultVo addUpdateProduct(@RequestBody Product product){
+        return ResultUtils.success("操作成功",this.productService.addAndUpdateProduct(product));
+    }
+
+    /**
+     * 产品详情页上 统计每个仓库还有多少库存
+     * @return
+     */
+    @GetMapping("/query_by_stock")
+    public ResultVo queryByStock(){
+        return ResultUtils.success("查询成功",this.productService.queryByStock());
     }
 }

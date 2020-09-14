@@ -1,45 +1,97 @@
 package com.itmk.system.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Objects;
 
-/**
- * productclassification
- * @author 
- */
-@Data
-@TableName("productclassification")
-public class Productclassification implements Serializable {
-    /**
-     * 分类id
-     */
-    //主键
-    @TableId
-    private Integer claId;
-
-    /**
-     * 分类名称
-     */
+@Entity
+public class Productclassification {
+    private int claId;
     private String claName;
-
-    /**
-     * 上级分类id(0为最高分类 1 为二级分类 数字越大 分类越后)
-     */
     private Integer claIdId;
-
-    /**
-     * 状态(正常、禁用)
-     */
     private String claState;
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    private Timestamp claDatetime;
+    @JsonIgnoreProperties("productclassification")
+    private List<Product> product;
 
-    /**
-     * 添加日期
-     */
-    private Date claDatetime;
+    @Id
+    @Column(name = "cla_id")
+    public int getClaId() {
+        return claId;
+    }
 
-    private static final long serialVersionUID = 1L;
+    public void setClaId(int claId) {
+        this.claId = claId;
+    }
+
+    @Basic
+    @Column(name = "cla_name")
+    public String getClaName() {
+        return claName;
+    }
+
+    public void setClaName(String claName) {
+        this.claName = claName;
+    }
+
+    @Basic
+    @Column(name = "cla_id_id")
+    public Integer getClaIdId() {
+        return claIdId;
+    }
+
+    public void setClaIdId(Integer claIdId) {
+        this.claIdId = claIdId;
+    }
+
+    @Basic
+    @Column(name = "cla_state")
+    public String getClaState() {
+        return claState;
+    }
+
+    public void setClaState(String claState) {
+        this.claState = claState;
+    }
+
+    @Basic
+    @Column(name = "cla_datetime")
+    public Timestamp getClaDatetime() {
+        return claDatetime;
+    }
+
+    public void setClaDatetime(Timestamp claDatetime) {
+        this.claDatetime = claDatetime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Productclassification that = (Productclassification) o;
+        return claId == that.claId &&
+                Objects.equals(claName, that.claName) &&
+                Objects.equals(claIdId, that.claIdId) &&
+                Objects.equals(claState, that.claState) &&
+                Objects.equals(claDatetime, that.claDatetime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(claId, claName, claIdId, claState, claDatetime);
+    }
+
+    @OneToMany(mappedBy = "productclassification")
+    public List<Product> getProduct() {
+        return product;
+    }
+
+    public void setProduct(List<Product> product) {
+        this.product = product;
+    }
 }
