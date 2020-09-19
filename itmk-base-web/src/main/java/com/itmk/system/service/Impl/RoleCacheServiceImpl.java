@@ -10,8 +10,11 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Slf4j
 @Service
+@Transactional
 public class RoleCacheServiceImpl extends ServiceImpl<RoleMapper, SysRole> implements RoleCacheService {
     @Override
     @Cacheable(value = "sys_role",key = "#roleId")

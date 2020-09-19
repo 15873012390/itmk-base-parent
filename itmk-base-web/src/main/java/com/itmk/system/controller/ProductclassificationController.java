@@ -6,12 +6,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itmk.result.ResultUtils;
 import com.itmk.result.ResultVo;
 import com.itmk.system.entity.Productclassification;
+import com.itmk.system.mapper.ProductclassificationDao;
 import com.itmk.system.service.ProductclassificationService;
+import com.itmk.system.vo.Pager;
 import com.itmk.system.vo.ProductclassificationVo;
+import com.itmk.system.vo.TreeUtilsVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 分类管理控制器
@@ -67,7 +73,7 @@ public class ProductclassificationController {
     * */
     @RequestMapping(value = "updateProductclassification",method = RequestMethod.POST)
     public ResultVo updateProductclassification(@RequestBody Productclassification productclassification){
-        QueryWrapper<Productclassification> query=new QueryWrapper<>();
+        QueryWrapper<Productclassification> query =new QueryWrapper<>();
         query.lambda().eq(Productclassification::getClaName,productclassification.getClaName());
         query.lambda().ne(Productclassification::getClaId,productclassification.getClaId());
         Productclassification p=productclassificationService.getOne(query);
@@ -101,5 +107,20 @@ public class ProductclassificationController {
     @GetMapping("/query_all_productClassification")
     public ResultVo queryAllProductClassification(){
         return ResultUtils.success("查询成功",this.productclassificationService.queryAllProductClassification());
+    }
+
+    /**
+     * 查询全部类别（分页）
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    @Autowired
+    private ProductclassificationDao productclassificationDao;
+    @GetMapping("/get_all_productClassification")
+    public ResultVo getAllProductClassification( Integer currentPage, Integer pageSize) throws Exception {
+        Pager<Productclassification> list=this.productclassificationService.getAllProductClassification(currentPage,pageSize);
+        List<TreeUtilsVo> treeList=TreeUtilsVo.getTreeList(this.productclassificationDao.getAllProductClassification(),"claId","claIdId","claName","claState","claDatetime");
+        return ResultUtils.success("查询成功",treeList);
     }
 }

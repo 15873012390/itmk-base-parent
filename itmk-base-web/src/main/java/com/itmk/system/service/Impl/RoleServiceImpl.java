@@ -11,7 +11,10 @@ import com.itmk.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, SysRole> implements RoleService {
     @Autowired
     private UserRoleMapper userRoleMapper;

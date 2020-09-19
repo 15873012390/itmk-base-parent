@@ -3,6 +3,7 @@ package com.itmk.system.controller;
 import com.itmk.result.ResultUtils;
 import com.itmk.result.ResultVo;
 import com.itmk.system.service.ProductspecificationService;
+import com.itmk.system.vo.ProductSpecificationVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

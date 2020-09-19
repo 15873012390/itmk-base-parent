@@ -6,6 +6,9 @@ import com.itmk.system.mapper.DepartmentMapper;
 import com.itmk.system.service.DepartmnetService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class DepartmnetServiceImpl extends ServiceImpl<DepartmentMapper, Department> implements DepartmnetService {
 }

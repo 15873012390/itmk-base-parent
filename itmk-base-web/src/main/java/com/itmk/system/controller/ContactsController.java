@@ -56,8 +56,7 @@ public class ContactsController {
     * */
     @RequestMapping(value = "addContacts",method = RequestMethod.POST)
     public ResultVo addContacts(@RequestBody com.itmk.system.entity.Contacts contacts){
-        boolean b=contactsService.save(contacts);
-        if(b){
+        if(this.contactsService.save(contacts)){
             return ResultUtils.success("新增联系人成功");
         }else{
             return ResultUtils.error("新增联系人失败");
@@ -68,8 +67,7 @@ public class ContactsController {
     * */
     @RequestMapping(value = "updateContacts",method = RequestMethod.POST)
     public ResultVo updateContacts(@RequestBody com.itmk.system.entity.Contacts contacts){
-        boolean b=contactsService.updateById(contacts);
-        if(b){
+        if(this.contactsService.updateById(contacts)){
             return ResultUtils.success("编辑联系人成功");
         }else{
             return ResultUtils.error("编辑联系人失败");
@@ -80,8 +78,7 @@ public class ContactsController {
     * */
     @DeleteMapping(value = "delete_contacts_by_id")
     public ResultVo deleteContactsById(Integer conId){
-        boolean b=contactsService.removeById(conId);
-        if(b){
+        if(contactsService.removeById(conId)){
             return ResultUtils.success("删除联系人成功");
         }else{
             return ResultUtils.error("删除联系人失败");
@@ -102,8 +99,7 @@ public class ContactsController {
         IPage<com.itmk.system.entity.Contacts> page=new Page<>();
         page.setCurrent(currentPage);
         page.setSize(pageSize);
-        IPage<com.itmk.system.entity.Contacts> contactsIPage=contactsService.page(page,queryWrapper);
-        return ResultUtils.success("查询联系人成功",contactsIPage);
+        return ResultUtils.success("查询联系人成功",this.contactsService.page(page,queryWrapper));
     }
 
 
@@ -121,8 +117,7 @@ public class ContactsController {
         IPage<com.itmk.system.entity.Contacts> page = new Page<>();
         page.setCurrent(currentPage);
         page.setSize(pageSize);
-        IPage<com.itmk.system.entity.Contacts> contactsIPage=contactsService.page(page,query);
-        return ResultUtils.success("查询成功",contactsIPage);
+        return ResultUtils.success("查询成功",this.contactsService.page(page,query));
     }
 
 
@@ -133,9 +128,7 @@ public class ContactsController {
      */
     @GetMapping("/query_contacts_by_id")
     public ResultVo queryContactsById(Integer id){
-        Contacts contacts=contactsService.queryContactsById(id);
-        log.info("sss",contacts);
-        return ResultUtils.success("查询成功",contacts);
+        return ResultUtils.success("查询成功",this.contactsService.queryContactsById(id));
     }
 
 
@@ -155,8 +148,7 @@ public class ContactsController {
         IPage<com.itmk.system.entity.Contacts> page = new Page<>();
         page.setCurrent(currentPage);
         page.setSize(pageSize);
-        IPage<com.itmk.system.entity.Contacts> contactsIPage=contactsService.page(page,query);
-        return ResultUtils.success("查询成功",contactsIPage);
+        return ResultUtils.success("查询成功",this.contactsService.page(page,query));
     }
 
     /**
@@ -175,8 +167,7 @@ public class ContactsController {
      * */
     @DeleteMapping(value = "delete_contacts_byids")
     public ResultVo deleteContactsByIds(Integer[] conIds){
-        boolean b=contactsService.removeByIds(Arrays.asList(conIds));
-        if(b){
+        if(contactsService.removeByIds(Arrays.asList(conIds))){
             return ResultUtils.success("删除联系人成功");
         }else{
             return ResultUtils.error("删除联系人失败");
@@ -190,7 +181,6 @@ public class ContactsController {
      */
     @PostMapping("/query_contacts_senior")
     public ResultVo queryContactsSenior(@RequestBody AdvancedQueryContactsDataVo advancedQueryContactsDataVo){
-
         return ResultUtils.success("操作成功",this.contactsService.queryContactsSenior(advancedQueryContactsDataVo));
     }
 }

@@ -2,6 +2,7 @@ package com.itmk.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itmk.system.entity.Productspecification;
+import com.itmk.system.vo.ProductSpecificationVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

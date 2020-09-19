@@ -9,10 +9,13 @@ import com.itmk.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
  * 用户Service实现类
  */
 @Service
+@Transactional
 public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements UserService {
 
     @Override

@@ -1,6 +1,8 @@
 package com.itmk.system.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -8,7 +10,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@TableName("warehouse")
 public class Warehouse {
+    @TableId
     @Excel(name="仓库ID")
     private int warehouseId;
     @Excel(name="仓库名称")
