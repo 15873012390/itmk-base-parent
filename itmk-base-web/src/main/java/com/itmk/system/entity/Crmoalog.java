@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * crmoalog
- * @author 
+ * @author
  */
 @Data
 @AllArgsConstructor
@@ -46,11 +46,16 @@ public class Crmoalog implements Serializable {
      * 创建人ID
      */
     private Long createUserId;
+    /**
+     *功能描述
+    *员工名
+     */
+    private String userName;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private Date  createTime;
 
     /**
      * 更新时间
@@ -71,11 +76,5 @@ public class Crmoalog implements Serializable {
      * 已读人
      */
     private String readUserIds;
-
-    /**
-     * 文件批次ID
-     */
-    private String batchId;
-
     private static final long serialVersionUID = 1L;
 }

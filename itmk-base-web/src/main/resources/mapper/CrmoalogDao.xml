@@ -9,18 +9,19 @@
     <result column="tomorrow" jdbcType="VARCHAR" property="tomorrow" />
     <result column="question" jdbcType="VARCHAR" property="question" />
     <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="username" jdbcType="VARCHAR" property="userName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="send_user_ids" jdbcType="VARCHAR" property="sendUserIds" />
     <result column="send_dept_ids" jdbcType="VARCHAR" property="sendDeptIds" />
     <result column="read_user_ids" jdbcType="VARCHAR" property="readUserIds" />
-    <result column="batch_id" jdbcType="VARCHAR" property="batchId" />
+
   </resultMap>
   <sql id="Base_Column_List">
-    log_id, category_id, title, content, tomorrow, question, create_user_id, create_time, 
-    update_time, send_user_ids, send_dept_ids, read_user_ids, batch_id
+    log_id, category_id, title, content, tomorrow, question, create_user_id,username, create_time,
+    update_time, send_user_ids, send_dept_ids, read_user_ids
   </sql>
-
+  <!--logId查询-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
    *
@@ -28,26 +29,60 @@
     where log_id = #{logId,jdbcType=INTEGER}
   </select>
 
+  <!--所有查询-->
   <select id="selectCrmlist" resultType="com.itmk.system.entity.Crmoalog">
     select
     *
-    from crmoalog
+    from crmoalog ORDER BY  create_time  Desc
 
   </select>
+  <!--类型查询-->
+  <select id="findCrmOaLogByType" resultType="com.itmk.system.entity.Crmoalog" parameterType="com.itmk.system.vo.CrmoalogSearchVo">
+    <!--查询字段-->
+     select * from crmoalog  where 1=1
+    <!--发表人筛选-->
+    <if test="userName!=null and userName!='' ">
+      and  username=#{userName}
+    </if>
+    <!--时间筛选-->
+    <if test="starDate!=null and starDate!='' ">
+      and create_time BETWEEN #{starDate}
+      AND #{endDate}
+    </if>
+    ORDER BY  create_time  Desc
+  </select>
+  <!--时间段查询-->
+  <select id="findCrmOaLogByCreateTime" resultType="com.itmk.system.entity.Crmoalog" parameterType="java.util.Map">
+    SELECT * FROM `crmoalog`
+    WHERE create_time BETWEEN #{beginTime}
+    AND #{endTime}
+
+    GROUP BY create_time
+    ORDER BY create_time
+  </select>
+  <!--根据createUserId查询-->
+    <select id="findCrmOaLogByCruId" resultType="com.itmk.system.entity.Crmoalog">
+      select * from crmoalog
+      where create_user_id = #{createUserId,jdbcType=BIGINT}
+
+    </select>
+
+    <!--删除操作-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from crmoalog
     where log_id = #{logId,jdbcType=INTEGER}
   </delete>
+  <!--插入语句-->
   <insert id="insert" keyColumn="log_id" keyProperty="logId" parameterType="com.itmk.system.entity.Crmoalog" useGeneratedKeys="true">
     insert into crmoalog (category_id, title, content, 
-      tomorrow, question, create_user_id, 
+      tomorrow, question, create_user_id, username,
       create_time, update_time, send_user_ids, 
-      send_dept_ids, read_user_ids, batch_id
+      send_dept_ids, read_user_ids
       )
     values (#{categoryId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{tomorrow,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{createUserId,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{sendUserIds,jdbcType=VARCHAR}, 
-      #{sendDeptIds,jdbcType=VARCHAR}, #{readUserIds,jdbcType=VARCHAR}, #{batchId,jdbcType=VARCHAR}
+      #{tomorrow,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{createUserId,jdbcType=BIGINT},
+      #{userName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{sendUserIds,jdbcType=VARCHAR}, #{sendDeptIds,jdbcType=VARCHAR}, #{readUserIds,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" keyColumn="log_id" keyProperty="logId" parameterType="com.itmk.system.entity.Crmoalog" useGeneratedKeys="true">
@@ -71,6 +106,9 @@
       <if test="createUserId != null">
         create_user_id,
       </if>
+      <if test="userName != null">
+        username,
+      </if >
       <if test="createTime != null">
         create_time,
       </if>
@@ -85,9 +123,6 @@
       </if>
       <if test="readUserIds != null">
         read_user_ids,
-      </if>
-      <if test="batchId != null">
-        batch_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -109,6 +144,9 @@
       <if test="createUserId != null">
         #{createUserId,jdbcType=BIGINT},
       </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if >
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -124,11 +162,10 @@
       <if test="readUserIds != null">
         #{readUserIds,jdbcType=VARCHAR},
       </if>
-      <if test="batchId != null">
-        #{batchId,jdbcType=VARCHAR},
-      </if>
+
     </trim>
   </insert>
+  <!--更新-->
   <update id="updateByPrimaryKeySelective" parameterType="com.itmk.system.entity.Crmoalog">
     update crmoalog
     <set>
@@ -150,6 +187,9 @@
       <if test="createUserId != null">
         create_user_id = #{createUserId,jdbcType=BIGINT},
       </if>
+      <if test="userName != null">
+        username =#{userName,jdbcType=VARCHAR},
+      </if >
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -165,9 +205,6 @@
       <if test="readUserIds != null">
         read_user_ids = #{readUserIds,jdbcType=VARCHAR},
       </if>
-      <if test="batchId != null">
-        batch_id = #{batchId,jdbcType=VARCHAR},
-      </if>
     </set>
     where log_id = #{logId,jdbcType=INTEGER}
   </update>
@@ -179,12 +216,12 @@
       tomorrow = #{tomorrow,jdbcType=VARCHAR},
       question = #{question,jdbcType=VARCHAR},
       create_user_id = #{createUserId,jdbcType=BIGINT},
+      username = #{userName,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       send_user_ids = #{sendUserIds,jdbcType=VARCHAR},
       send_dept_ids = #{sendDeptIds,jdbcType=VARCHAR},
-      read_user_ids = #{readUserIds,jdbcType=VARCHAR},
-      batch_id = #{batchId,jdbcType=VARCHAR}
+      read_user_ids = #{readUserIds,jdbcType=VARCHAR}
     where log_id = #{logId,jdbcType=INTEGER}
   </update>
 </mapper>

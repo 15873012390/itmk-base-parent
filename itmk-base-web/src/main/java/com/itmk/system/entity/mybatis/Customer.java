@@ -50,11 +50,11 @@ public class Customer {
     private String cusGrading;
     @Excel(name="备注")
     private String cusRemarks;
+    //用户
     private JpaSysUser jpaSysUser;
     //联系人表
     private List<Contacts> contacts;
-//    @JsonIgnoreProperties("customer")
-//    private List<Customerchurnwarning> customerchurnwarning;
+
 
 
     @Id

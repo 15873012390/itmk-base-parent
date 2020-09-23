@@ -16,7 +16,7 @@ jwt:
 itmk:
   loginUrl: /api/user/login
   imgUrl: /api/user/image
-jpa:
+jpa:vzxcvbcdxsazzad}";[/  :
   database: mysql
   database-platform: org.hibernate.dialect.MySQL5Dialect
   show-sql: true
