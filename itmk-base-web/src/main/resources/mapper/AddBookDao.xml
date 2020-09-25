@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.system.mapper.AddBookDao">
+
+ <!-- <sql id="addCol">
+       s.id,s.login_name, s.dept_name, s.mobile
+        </sql>-->
+  <select id="getAddBookList" resultType="com.itmk.system.entity.AddBook">
+  select id,mobile,dept_id,dept_name,login_name from sys_user
+
+  </select>
+ <select id="findAddBookById" resultType="com.itmk.system.entity.AddBook">
+  /*select id,mobile,dept_id,dept_name,login_name from sys_user where login_name='lcy';*/
+  select id,mobile,dept_id,dept_name,login_name from sys_user where id=#{id}
+ </select>
+ <select id="findAddBookByName" resultType="com.itmk.system.entity.AddBook">
+  select id,mobile,dept_id,dept_name,login_name from sys_user where login_name=#{loginName}
+ </select>
+ <select id="findAddBookByDname" resultType="com.itmk.system.entity.AddBook">
+  select id,mobile,dept_id,dept_name,login_name from sys_user where dept_name=#{deptName}
+ </select>
+
+ <delete id="deleteAddBookById" parameterType="java.lang.Integer">
+   delete from sys_user
+   where id=#{id,jdbcType=INTEGER}
+ </delete>
+
+</mapper>

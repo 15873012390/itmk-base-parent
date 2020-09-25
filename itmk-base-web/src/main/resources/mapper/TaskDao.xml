@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.system.mapper.TaskDao">
+    <select id="getTaskList" resultType="com.itmk.system.entity.Task">
+        select * from task
+    </select>
+    <insert id="insertSelect" keyColumn="taskId" keyProperty="taskId" parameterType="com.itmk.system.entity.Task" useGeneratedKeys="true">
+        insert into task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="createId != null">
+                create_user_id,
+            </if>
+            <if test="mainId != null">
+                main_user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="stopTime != null">
+                stop_time,
+            </if>
+            <if test="priority != null">
+                priority,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null">
+                #{createId,jdbcType=INTEGER},
+            </if>
+            <if test="mainId != null">
+                #{mainId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopTime != null">
+                #{stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="priority != null">
+                #{priority,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from task
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </delete>
+    <update id="updateByPrimaryKey" parameterType="com.itmk.system.entity.Task">
+    update task
+     <set>
+         <if test="name != null">
+            name = #{name,jdbcType=VARCHAR},
+         </if>
+         <if test="createId != null">
+            create_user_id = #{createId,jdbcType=INTEGER},
+         </if>
+         <if test="mainId != null">
+            main_user_id = #{mainId,jdbcType=INTEGER},
+         </if>
+         <if test="createTime != null">
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+         </if>
+         <if test="updateTime != null">
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+         </if>
+         <if test="startTime != null">
+            start_time = #{startTime,jdbcType=TIMESTAMP},
+         </if>
+         <if test="stopTime != null">
+            stop_time = #{stopTime,jdbcType=TIMESTAMP},
+         </if>
+         <if test="priority != null">
+            priority = #{priority,jdbcType=INTEGER},
+         </if>
+         <if test="status != null">
+            status = #{status,jdbcType=INTEGER},
+         </if>
+         <if test="description != null">
+            description =   #{description,jdbcType=VARCHAR},
+         </if>
+     </set>
+        where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+
+</mapper>
