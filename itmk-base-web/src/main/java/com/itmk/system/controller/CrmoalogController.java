@@ -36,9 +36,12 @@ public class CrmoalogController {
     @ResponseBody
     @RequestMapping(value = "insertSelective", method = RequestMethod.POST)
     public ResultVo  insertSelective(@RequestBody Crmoalog crmoalog, HttpServletRequest HttpServletRequest){
+        System.out.println(crmoalog);
         String username = JwtUtils.getUsernameFromToken(HttpServletRequest.getHeader("token"));
         SysUser user = UserService.getUserByUserName(username);
         crmoalog.setCreateUserId(user.getId());
+        crmoalog.setUserName(user.getUsername());
+        log.info("已添加"+crmoalog);
         return ResultUtils.success("增加成功",crmoalogService.insertSelective(crmoalog));
     }
 
@@ -53,7 +56,6 @@ public class CrmoalogController {
     public ResultVo selectByPrimaryKey(Integer logId){
         return ResultUtils.success("查询成功",this.crmoalogService.selectByPrimaryKey(logId));
     }
-
     /**
      * 更改日志信息
      * @param crmoalog
@@ -63,9 +65,7 @@ public class CrmoalogController {
     @RequestMapping(value = "updateByPrimaryKeySelective", method = RequestMethod.GET)
     public ResultVo updateByPrimaryKeySelective(Crmoalog crmoalog){
         return ResultUtils.success("更改成功", crmoalogService.updateByPrimaryKeySelective(crmoalog));
-
     }
-
     /**
      * 根据LogId删除工作日志
      * @param logId

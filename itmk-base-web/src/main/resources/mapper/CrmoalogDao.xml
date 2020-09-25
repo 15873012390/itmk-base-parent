@@ -15,11 +15,12 @@
     <result column="send_user_ids" jdbcType="VARCHAR" property="sendUserIds" />
     <result column="send_dept_ids" jdbcType="VARCHAR" property="sendDeptIds" />
     <result column="read_user_ids" jdbcType="VARCHAR" property="readUserIds" />
+    <result column="con_img" jdbcType="VARCHAR" property="conImg" />
 
   </resultMap>
   <sql id="Base_Column_List">
     log_id, category_id, title, content, tomorrow, question, create_user_id,username, create_time,
-    update_time, send_user_ids, send_dept_ids, read_user_ids
+    update_time, send_user_ids, send_dept_ids, read_user_ids,con_img
   </sql>
   <!--logId查询-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -64,6 +65,7 @@
     <select id="findCrmOaLogByCruId" resultType="com.itmk.system.entity.Crmoalog">
       select * from crmoalog
       where create_user_id = #{createUserId,jdbcType=BIGINT}
+      ORDER BY  create_time  Desc
 
     </select>
 
@@ -77,12 +79,13 @@
     insert into crmoalog (category_id, title, content, 
       tomorrow, question, create_user_id, username,
       create_time, update_time, send_user_ids, 
-      send_dept_ids, read_user_ids
+      send_dept_ids, read_user_ids,con_img
       )
     values (#{categoryId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
       #{tomorrow,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{createUserId,jdbcType=BIGINT},
       #{userName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-      #{sendUserIds,jdbcType=VARCHAR}, #{sendDeptIds,jdbcType=VARCHAR}, #{readUserIds,jdbcType=VARCHAR}
+      #{sendUserIds,jdbcType=VARCHAR}, #{sendDeptIds,jdbcType=VARCHAR}, #{readUserIds,jdbcType=VARCHAR},
+      #{conImg,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" keyColumn="log_id" keyProperty="logId" parameterType="com.itmk.system.entity.Crmoalog" useGeneratedKeys="true">
@@ -124,6 +127,9 @@
       <if test="readUserIds != null">
         read_user_ids,
       </if>
+      <if test="conImg != null">
+        con_img,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="categoryId != null">
@@ -161,6 +167,9 @@
       </if>
       <if test="readUserIds != null">
         #{readUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="conImg != null">
+        #{conImg,jdbcType=VARCHAR},
       </if>
 
     </trim>
@@ -204,6 +213,9 @@
       </if>
       <if test="readUserIds != null">
         read_user_ids = #{readUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="conImg != null">
+        con_img = #{conImg,jdbcType=VARCHAR},
       </if>
     </set>
     where log_id = #{logId,jdbcType=INTEGER}

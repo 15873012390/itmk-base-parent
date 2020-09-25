@@ -76,5 +76,9 @@ public class Crmoalog implements Serializable {
      * 已读人
      */
     private String readUserIds;
+    /**
+     * 日志图片
+     */
+    private  String conImg;
     private static final long serialVersionUID = 1L;
 }
