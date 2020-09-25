@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.system.mapper.NotiesDao">
+  <resultMap id="BaseResultMap" type="com.itmk.system.entity.Noties">
+    <id column="msg_id" jdbcType="INTEGER" property="msgId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+    <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+    <result column="depart_id" jdbcType="VARCHAR" property="departId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="read_user_ids" jdbcType="VARCHAR" property="readUserIds" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    msg_id, title, message, create_user_id, dept_id, depart_id, create_time, update_time, 
+    start_date, end_date, read_user_ids
+  </sql>
+<!--    根据ID查询公告-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from noties
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </select>
+
+<!--    查询所有公告-->
+    <select id="selectAll" resultType="com.itmk.system.entity.Noties">
+        select
+        <include refid="Base_Column_List"/>
+        from noties
+    </select>
+<!--    根据ID删除公告-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from noties
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </delete>
+<!--    插入公告-->
+  <insert id="insert" keyColumn="msg_id" keyProperty="msgId" parameterType="com.itmk.system.entity.Noties" useGeneratedKeys="true">
+    insert into noties (title, message, create_user_id, 
+      dept_id, depart_id, create_time, 
+      update_time, start_date, end_date, 
+      read_user_ids)
+    values (#{title,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{createUserId,jdbcType=INTEGER}, 
+      #{deptId,jdbcType=VARCHAR}, #{departId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
+      #{readUserIds,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" keyColumn="msg_id" keyProperty="msgId" parameterType="com.itmk.system.entity.Noties" useGeneratedKeys="true">
+    insert into noties
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        title,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="departId != null">
+        depart_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="readUserIds != null">
+        read_user_ids,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="departId != null">
+        #{departId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="readUserIds != null">
+        #{readUserIds,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itmk.system.entity.Noties">
+    update noties
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="departId != null">
+        depart_id = #{departId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="readUserIds != null">
+        read_user_ids = #{readUserIds,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itmk.system.entity.Noties">
+    update noties
+    set title = #{title,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      dept_id = #{deptId,jdbcType=VARCHAR},
+      depart_id = #{departId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      read_user_ids = #{readUserIds,jdbcType=VARCHAR}
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </update>
+</mapper>

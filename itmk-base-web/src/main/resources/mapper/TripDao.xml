@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.system.mapper.TripDao">
+  <resultMap id="BaseResultMap" type="com.itmk.system.entity.Trip">
+    <id column="trip_id" jdbcType="INTEGER" property="tripId" />
+    <result column="trip_theme" jdbcType="VARCHAR" property="tripTheme" />
+    <result column="trip_start_time" jdbcType="TIMESTAMP" property="tripStartTime" />
+    <result column="trip_end_time" jdbcType="TIMESTAMP" property="tripEndTime" />
+    <result column="trip_create_user" jdbcType="INTEGER" property="tripCreateUser" />
+    <result column="trip_create_time" jdbcType="TIMESTAMP" property="tripCreateTime" />
+    <result column="trip_update_time" jdbcType="TIMESTAMP" property="tripUpdateTime" />
+    <result column="trip_type" jdbcType="INTEGER" property="tripType" />
+    <result column="trip_attend" jdbcType="VARCHAR" property="tripAttend" />
+    <result column="trip_address" jdbcType="VARCHAR" property="tripAddress" />
+    <result column="trip_message" jdbcType="VARCHAR" property="tripMessage" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    trip_id, trip_theme, trip_start_time, trip_end_time, trip_create_user, trip_create_time, 
+    trip_update_time, trip_type, trip_attend, trip_address, trip_message
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trip
+    where trip_id = #{tripId,jdbcType=INTEGER}
+  </select>
+
+    <select id="selectAll" resultType="com.itmk.system.entity.Trip">
+        select
+        <include refid="Base_Column_List"/>
+        from trip
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from trip
+    where trip_id = #{tripId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="trip_id" keyProperty="tripId" parameterType="com.itmk.system.entity.Trip" useGeneratedKeys="true">
+    insert into trip (trip_theme, trip_start_time, trip_end_time, 
+      trip_create_user, trip_create_time, trip_update_time, 
+      trip_type, trip_attend, trip_address, 
+      trip_message)
+    values (#{tripTheme,jdbcType=VARCHAR}, #{tripStartTime,jdbcType=TIMESTAMP}, #{tripEndTime,jdbcType=TIMESTAMP}, 
+      #{tripCreateUser,jdbcType=INTEGER}, #{tripCreateTime,jdbcType=TIMESTAMP}, #{tripUpdateTime,jdbcType=TIMESTAMP}, 
+      #{tripType,jdbcType=INTEGER}, #{tripAttend,jdbcType=VARCHAR}, #{tripAddress,jdbcType=VARCHAR}, 
+      #{tripMessage,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="trip_id" keyProperty="tripId" parameterType="com.itmk.system.entity.Trip" useGeneratedKeys="true">
+    insert into trip
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tripTheme != null">
+        trip_theme,
+      </if>
+      <if test="tripStartTime != null">
+        trip_start_time,
+      </if>
+      <if test="tripEndTime != null">
+        trip_end_time,
+      </if>
+      <if test="tripCreateUser != null">
+        trip_create_user,
+      </if>
+      <if test="tripCreateTime != null">
+        trip_create_time,
+      </if>
+      <if test="tripUpdateTime != null">
+        trip_update_time,
+      </if>
+      <if test="tripType != null">
+        trip_type,
+      </if>
+      <if test="tripAttend != null">
+        trip_attend,
+      </if>
+      <if test="tripAddress != null">
+        trip_address,
+      </if>
+      <if test="tripMessage != null">
+        trip_message,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tripTheme != null">
+        #{tripTheme,jdbcType=VARCHAR},
+      </if>
+      <if test="tripStartTime != null">
+        #{tripStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tripEndTime != null">
+        #{tripEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tripCreateUser != null">
+        #{tripCreateUser,jdbcType=INTEGER},
+      </if>
+      <if test="tripCreateTime != null">
+        #{tripCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tripUpdateTime != null">
+        #{tripUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tripType != null">
+        #{tripType,jdbcType=INTEGER},
+      </if>
+      <if test="tripAttend != null">
+        #{tripAttend,jdbcType=VARCHAR},
+      </if>
+      <if test="tripAddress != null">
+        #{tripAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tripMessage != null">
+        #{tripMessage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itmk.system.entity.Trip">
+    update trip
+    <set>
+      <if test="tripTheme != null">
+        trip_theme = #{tripTheme,jdbcType=VARCHAR},
+      </if>
+      <if test="tripStartTime != null">
+        trip_start_time = #{tripStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tripEndTime != null">
+        trip_end_time = #{tripEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tripCreateUser != null">
+        trip_create_user = #{tripCreateUser,jdbcType=INTEGER},
+      </if>
+      <if test="tripCreateTime != null">
+        trip_create_time = #{tripCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tripUpdateTime != null">
+        trip_update_time = #{tripUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tripType != null">
+        trip_type = #{tripType,jdbcType=INTEGER},
+      </if>
+      <if test="tripAttend != null">
+        trip_attend = #{tripAttend,jdbcType=VARCHAR},
+      </if>
+      <if test="tripAddress != null">
+        trip_address = #{tripAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tripMessage != null">
+        trip_message = #{tripMessage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where trip_id = #{tripId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itmk.system.entity.Trip">
+    update trip
+    set trip_theme = #{tripTheme,jdbcType=VARCHAR},
+      trip_start_time = #{tripStartTime,jdbcType=TIMESTAMP},
+      trip_end_time = #{tripEndTime,jdbcType=TIMESTAMP},
+      trip_create_user = #{tripCreateUser,jdbcType=INTEGER},
+      trip_create_time = #{tripCreateTime,jdbcType=TIMESTAMP},
+      trip_update_time = #{tripUpdateTime,jdbcType=TIMESTAMP},
+      trip_type = #{tripType,jdbcType=INTEGER},
+      trip_attend = #{tripAttend,jdbcType=VARCHAR},
+      trip_address = #{tripAddress,jdbcType=VARCHAR},
+      trip_message = #{tripMessage,jdbcType=VARCHAR}
+    where trip_id = #{tripId,jdbcType=INTEGER}
+  </update>
+</mapper>
