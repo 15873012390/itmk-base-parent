@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/itmk-system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
-    password: root2019
+    password: root2020
 #jwt配置
 jwt:
   secret: com.itmk
@@ -16,7 +16,7 @@ jwt:
 itmk:
   loginUrl: /api/user/login
   imgUrl: /api/user/image
-jpa:
+jpa:vzxcvbcdxsazzad}";[/  :
   database: mysql
   database-platform: org.hibernate.dialect.MySQL5Dialect
   show-sql: true
@@ -61,4 +61,4 @@ http:
 #文件保存位置
 uploadFile:
   resourceHandler: /uploadImgFiles/**   #请求 url 中的资源映射
-  location: E:/PL/uploadImgFiles/ #自定义上传文件本地保存路径
+  location: D:/PL/uploadImgFiles/ #自定义上传文件本地保存路径

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.system.mapper.CrmoalogDao">
+  <resultMap id="BaseResultMap" type="com.itmk.system.entity.Crmoalog">
+    <id column="log_id" jdbcType="INTEGER" property="logId" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="tomorrow" jdbcType="VARCHAR" property="tomorrow" />
+    <result column="question" jdbcType="VARCHAR" property="question" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="username" jdbcType="VARCHAR" property="userName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="send_user_ids" jdbcType="VARCHAR" property="sendUserIds" />
+    <result column="send_dept_ids" jdbcType="VARCHAR" property="sendDeptIds" />
+    <result column="read_user_ids" jdbcType="VARCHAR" property="readUserIds" />
+    <result column="con_img" jdbcType="VARCHAR" property="conImg" />
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    log_id, category_id, title, content, tomorrow, question, create_user_id,username, create_time,
+    update_time, send_user_ids, send_dept_ids, read_user_ids,con_img
+  </sql>
+  <!--logId查询-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+   *
+    from crmoalog
+    where log_id = #{logId,jdbcType=INTEGER}
+  </select>
+
+  <!--所有查询-->
+  <select id="selectCrmlist" resultType="com.itmk.system.entity.Crmoalog">
+    select
+    *
+    from crmoalog ORDER BY  create_time  Desc
+
+  </select>
+  <!--类型查询-->
+  <select id="findCrmOaLogByType" resultType="com.itmk.system.entity.Crmoalog" parameterType="com.itmk.system.vo.CrmoalogSearchVo">
+    <!--查询字段-->
+     select * from crmoalog  where 1=1
+    <!--发表人筛选-->
+    <if test="userName!=null and userName!='' ">
+      and  username=#{userName}
+    </if>
+    <!--时间筛选-->
+    <if test="starDate!=null and starDate!='' ">
+      and create_time BETWEEN #{starDate}
+      AND #{endDate}
+    </if>
+    ORDER BY  create_time  Desc
+  </select>
+  <!--时间段查询-->
+  <select id="findCrmOaLogByCreateTime" resultType="com.itmk.system.entity.Crmoalog" parameterType="java.util.Map">
+    SELECT * FROM `crmoalog`
+    WHERE create_time BETWEEN #{beginTime}
+    AND #{endTime}
+
+    GROUP BY create_time
+    ORDER BY create_time
+  </select>
+  <!--根据createUserId查询-->
+    <select id="findCrmOaLogByCruId" resultType="com.itmk.system.entity.Crmoalog">
+      select * from crmoalog
+      where create_user_id = #{createUserId,jdbcType=BIGINT}
+      ORDER BY  create_time  Desc
+
+    </select>
+
+    <!--删除操作-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from crmoalog
+    where log_id = #{logId,jdbcType=INTEGER}
+  </delete>
+  <!--插入语句-->
+  <insert id="insert" keyColumn="log_id" keyProperty="logId" parameterType="com.itmk.system.entity.Crmoalog" useGeneratedKeys="true">
+    insert into crmoalog (category_id, title, content, 
+      tomorrow, question, create_user_id, username,
+      create_time, update_time, send_user_ids, 
+      send_dept_ids, read_user_ids,con_img
+      )
+    values (#{categoryId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{tomorrow,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{createUserId,jdbcType=BIGINT},
+      #{userName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{sendUserIds,jdbcType=VARCHAR}, #{sendDeptIds,jdbcType=VARCHAR}, #{readUserIds,jdbcType=VARCHAR},
+      #{conImg,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="log_id" keyProperty="logId" parameterType="com.itmk.system.entity.Crmoalog" useGeneratedKeys="true">
+    insert into crmoalog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="tomorrow != null">
+        tomorrow,
+      </if>
+      <if test="question != null">
+        question,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="userName != null">
+        username,
+      </if >
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="sendUserIds != null">
+        send_user_ids,
+      </if>
+      <if test="sendDeptIds != null">
+        send_dept_ids,
+      </if>
+      <if test="readUserIds != null">
+        read_user_ids,
+      </if>
+      <if test="conImg != null">
+        con_img,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="tomorrow != null">
+        #{tomorrow,jdbcType=VARCHAR},
+      </if>
+      <if test="question != null">
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if >
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendUserIds != null">
+        #{sendUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="sendDeptIds != null">
+        #{sendDeptIds,jdbcType=VARCHAR},
+      </if>
+      <if test="readUserIds != null">
+        #{readUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="conImg != null">
+        #{conImg,jdbcType=VARCHAR},
+      </if>
+
+    </trim>
+  </insert>
+  <!--更新-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.itmk.system.entity.Crmoalog">
+    update crmoalog
+    <set>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="tomorrow != null">
+        tomorrow = #{tomorrow,jdbcType=VARCHAR},
+      </if>
+      <if test="question != null">
+        question = #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        username =#{userName,jdbcType=VARCHAR},
+      </if >
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendUserIds != null">
+        send_user_ids = #{sendUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="sendDeptIds != null">
+        send_dept_ids = #{sendDeptIds,jdbcType=VARCHAR},
+      </if>
+      <if test="readUserIds != null">
+        read_user_ids = #{readUserIds,jdbcType=VARCHAR},
+      </if>
+      <if test="conImg != null">
+        con_img = #{conImg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itmk.system.entity.Crmoalog">
+    update crmoalog
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      tomorrow = #{tomorrow,jdbcType=VARCHAR},
+      question = #{question,jdbcType=VARCHAR},
+      create_user_id = #{createUserId,jdbcType=BIGINT},
+      username = #{userName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      send_user_ids = #{sendUserIds,jdbcType=VARCHAR},
+      send_dept_ids = #{sendDeptIds,jdbcType=VARCHAR},
+      read_user_ids = #{readUserIds,jdbcType=VARCHAR}
+    where log_id = #{logId,jdbcType=INTEGER}
+  </update>
+</mapper>
