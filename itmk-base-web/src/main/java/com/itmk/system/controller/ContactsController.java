@@ -26,18 +26,6 @@ public class ContactsController {
     @Autowired
     private ContactsService contactsService;
 
-    /*
-    * 查询全部联系人
-    * */
-    /*@GetMapping(value = "query_all_contacts")
-    public ResultVo getAllContacts(ParmVo parm){
-        //分页
-        IPage<com.itmk.system.entity.Contacts> page=new Page<>();
-        page.setCurrent(parm.getCurrentPage());
-        page.setSize(parm.getpageSize());
-        IPage<com.itmk.system.entity.Contacts> contactsIPage=contactsService.page(page);
-        return ResultUtils.success("查询联系人成功",contactsIPage);
-    }*/
 
     /**
      * 查询所有联系人

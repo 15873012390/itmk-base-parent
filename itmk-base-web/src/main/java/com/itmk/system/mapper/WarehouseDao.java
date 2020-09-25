@@ -20,5 +20,6 @@ public interface WarehouseDao extends BaseMapper<Warehouse> {
     public List<Warehouse> queryByAdvanced(WarehouseAdvancedSearch wareHouseAdvancedSearch);
     //通过id搜索仓库
     public  Warehouse queryByWarehouseId(@Param("warehouseId") Integer warehouseId);
-
+    //查询所有仓库
+    public List<Warehouse> queryAllByPage();
 }

@@ -28,4 +28,6 @@ public interface ProductService extends IService<Product> {
     public Integer addAndUpdateProduct(Product product);
     //产品详情页上 统计每个仓库还有多少库存
     public List<CountPieVo> queryByStock();
+    //通过规格id查询产品
+    public Product findBySpeid(Integer speid);
 }

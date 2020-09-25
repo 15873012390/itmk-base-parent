@@ -103,4 +103,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao,Product> implemen
     public List<CountPieVo> queryByStock() {
         return this.stockDao.queryByStock();
     }
+
+    @Override
+    public Product findBySpeid(Integer speid) {
+        return this.productDao.findBySpeid(speid);
+    }
 }

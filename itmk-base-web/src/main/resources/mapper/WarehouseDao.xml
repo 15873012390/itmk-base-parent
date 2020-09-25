@@ -45,7 +45,7 @@
         w.remarks AS 'remarks'
     </sql>
 
-    <select id="queryAllWarehouse" resultType="com.itmk.system.entity.Warehouse">
+    <select id="queryAllWarehouse" resultMap="warehouseMap">
         select
         <include refid="warehouseColumns" />
         from warehouse w
@@ -91,5 +91,17 @@
         <!--<where>
             <include refid="warehouse_where"></include>
         </where>-->
+    </select>
+    <select id="queryAllByPage" resultMap="warehouseMap">
+        select
+        <include refid="warehouseColumns" />
+        from warehouse w
+        order by w.warehouse_id desc
+    </select>
+
+    <select id="selectStockList" resultMap="com.itmk.system.mapper.StockDao.stockMap">
+        select * from stock sto
+        left join productspecification pros on sto.spe_id = pros.spe_id
+        where sto.warehouse_id=#{warehouseId}
     </select>
 </mapper>

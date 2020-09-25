@@ -41,6 +41,7 @@
             </association>
         </resultMap>
 
+    <!--查询所有库存-->
     <select id="queryAllStock" resultMap="stockMap">
         select * from stock sto
         left join productspecification pros on sto.spe_id = pros.spe_id
@@ -51,5 +52,76 @@
     <!--统计每个仓库有多少库存-->
     <select id="queryByStock" resultType="com.itmk.system.vo.CountPieVo">
     SELECT w.warehouse_name as name,sum(s.stock_quantity) as value FROM stock s LEFT JOIN warehouse w ON s.warehouse_id=w.warehouse_id GROUP BY w.warehouse_name
+    </select>
+    <!--通过库存id查詢库存-->
+    <select id="queryStockByStockId" resultMap="stockMap">
+         select * from stock sto
+        left join productspecification pros on sto.spe_id = pros.spe_id
+        left join warehouse w on sto.warehouse_id = w.warehouse_id
+        left join alarmdetail a on sto.stock_id = a.stock_id where sto.stock_id = #{stockId}
+    </select>
+    <!--通过下拉框搜索值搜索库存列表-->
+    <select id="queryStockBySearch" resultMap="stockMap">
+        select * from stock sto
+        left join productspecification pros on sto.spe_id = pros.spe_id
+        left join warehouse w on sto.warehouse_id = w.warehouse_id
+        left join alarmdetail a on sto.stock_id = a.stock_id
+        <where>
+            <if test="select=='产品名称'">
+                and pros.pro_name like #{input}
+            </if>
+        </where>
+        order by sto.stock_id desc
+    </select>
+    <!--高级查询库存列表-->
+    <select id="queryStockByAdvanced" parameterType="com.itmk.system.vo.StockAdvancedSearchVo" resultMap="stockMap">
+        select * from stock sto
+        left join productspecification pros on sto.spe_id = pros.spe_id
+        left join warehouse w on sto.warehouse_id = w.warehouse_id
+        left join alarmdetail a on sto.stock_id = a.stock_id where 1=1
+        <if test="stockQuantity!=0 and stockQuantity!='' and stockQuantity!=null">
+            <choose>
+                <when test="stockNumSelect=='大于'">
+                    and sto.stock_quantity &gt;#{stockQuantity}
+                </when>
+                <when test="stockNumSelect=='小于'">
+                    and sto.stock_quantity&lt;#{stockQuantity}
+                </when>
+                <when test="stockNumSelect=='不等于'">
+                    and sto.stock_quantity！=#{stockQuantity}
+                </when>
+                <otherwise>
+                    and sto.stock_quantity =#{stockQuantity}
+                </otherwise>
+            </choose>
+
+        </if>
+        <if test ="proName.length!=0 and proName!=null">
+            and pros.pro_name like '%${proName}%'
+        </if>
+        <if test="warehouseId!=null and warehouseId.length!=0">
+            and w.warehouse_id in
+            <foreach collection="warehouseId" index="index" item="w"
+                     open="(" separator="," close=")">
+                #{w}
+            </foreach>
+        </if>
+        order by sto.stock_id desc
+    </select>
+
+    <!--清除数据为0的库存-->
+    <update id="removeStockisZero">
+        update stock set stock_status = 0 where stock_quantity = 0
+    </update>
+    <!--通过仓库id和规格id查询库存-->
+    <select id="queryStockByWarehouseAndSpeId" resultMap="stockMap">
+        select * from stock s
+        LEFT JOIN productspecification p on s.spe_id = p.spe_id
+        LEFT JOIN warehouse w on s.warehouse_id = w.warehouse_id
+        where p.spe_id =#{speId} and w.warehouse_id =#{warehouseId}
+    </select>
+
+    <select id="queryQuantityBySpeId" resultMap="stockMap">
+        Select * from stock where spe_id = #{speId}
     </select>
 </mapper>

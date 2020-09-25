@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@TableName("warehouse")
 public class Warehouse {
-    @TableId
     @Excel(name="仓库ID")
     private int warehouseId;
     @Excel(name="仓库名称")
@@ -23,7 +21,13 @@ public class Warehouse {
     private BigDecimal stockValue;
     @Excel(name="备注")
     private String remarks;
+    //private List<Purchaseplan> purchaseplan;
+    private List<Outstock> outstock;
     private List<Stock> stock;
+    private List<Instock> instock;
+    private List<Returnedgoods> returnedgoods;
+    private List<Warehouseallocation> inwarehouseallocations;
+    private List<Warehouseallocation> outwarehouseallocations;
 
     @Id
     @Column(name = "warehouse_id")
@@ -93,7 +97,23 @@ public class Warehouse {
         return Objects.hash(warehouseId, warehouseName, stockType, stockValue, remarks);
     }
 
+    /*@OneToMany(mappedBy = "warehouse",cascade = CascadeType.ALL)
+    public List<Purchaseplan> getPurchaseplan() {
+        return purchaseplan;
+    }
 
+    public void setPurchaseplan(List<Purchaseplan> purchaseplan) {
+        this.purchaseplan = purchaseplan;
+    }*/
+
+    @OneToMany(mappedBy = "warehouse",cascade = CascadeType.ALL)
+    public List<Outstock> getOutstock() {
+        return outstock;
+    }
+
+    public void setOutstock(List<Outstock> outstock) {
+        this.outstock = outstock;
+    }
 
     @OneToMany(mappedBy = "warehouse",cascade = CascadeType.ALL)
     public List<Stock> getStock() {
@@ -104,6 +124,24 @@ public class Warehouse {
         this.stock = stock;
     }
 
+    @OneToMany(mappedBy = "warehouse",cascade = CascadeType.ALL)
+    public List<Instock> getInstock() {
+        return instock;
+    }
+
+    public void setInstock(List<Instock> instock) {
+        this.instock = instock;
+    }
+
+    @OneToMany(mappedBy = "warehouse",cascade = CascadeType.ALL)
+    public List<Returnedgoods> getReturnedgoods() {
+        return returnedgoods;
+    }
+
+    public void setReturnedgoods(List<Returnedgoods> returnedgoods) {
+        this.returnedgoods = returnedgoods;
+    }
+
     @Override
     public String toString() {
         return "Warehouse{" +
@@ -112,7 +150,29 @@ public class Warehouse {
                 ", stockType='" + stockType + '\'' +
                 ", stockValue=" + stockValue +
                 ", remarks='" + remarks + '\'' +
+                //", purchaseplan=" + purchaseplan +
+                ", outstock=" + outstock +
                 ", stock=" + stock +
+                ", instock=" + instock +
+                ", returnedgoods=" + returnedgoods +
                 '}';
+    }
+
+    @OneToMany(mappedBy = "inwarehouse")
+    public List<Warehouseallocation> getInwarehouseallocations() {
+        return inwarehouseallocations;
+    }
+
+    public void setInwarehouseallocations(List<Warehouseallocation> inwarehouseallocations) {
+        this.inwarehouseallocations = inwarehouseallocations;
+    }
+
+    @OneToMany(mappedBy = "outwarehouse")
+    public List<Warehouseallocation> getOutwarehouseallocations() {
+        return outwarehouseallocations;
+    }
+
+    public void setOutwarehouseallocations(List<Warehouseallocation> outwarehouseallocations) {
+        this.outwarehouseallocations = outwarehouseallocations;
     }
 }

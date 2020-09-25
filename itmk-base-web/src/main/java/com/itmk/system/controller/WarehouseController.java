@@ -7,6 +7,7 @@ import com.itmk.result.ResultVo;
 import com.itmk.system.entity.Warehouse;
 import com.itmk.system.service.WarehouseService;
 import com.itmk.system.vo.WarehouseAdvancedSearch;
+import com.itmk.system.vo.WarehouseallocationdetailVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

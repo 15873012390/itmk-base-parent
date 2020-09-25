@@ -157,7 +157,6 @@ public class UserController {
     * */
     @GetMapping("query_all_user")
     public ResultVo queryAllUser(){
-
         return ResultUtils.success("查询成功",this.userService.list());
     }
 }

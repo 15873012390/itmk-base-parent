@@ -30,6 +30,13 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/customer")
+/**
+ *功能描述 客户控制器
+ * @author 廖湘明
+ * @date 2020/9/22
+ * @param
+ * @return
+ */
 public class LxmCustomerController {
 
     @Autowired

@@ -1,6 +1,7 @@
 package com.itmk.system.entity.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.itmk.system.entity.Warehouseallocation;
 import com.itmk.system.entity.mybatis.Customer;
 import com.itmk.system.entity.mybatis.Customertransfer;
 
@@ -37,6 +38,8 @@ public class JpaSysUser {
     private List<Customertransfer> customertransfer2;
     @JsonIgnoreProperties("user1")
     private List<Customertransfer> customertransfer1;
+    private List<Warehouseallocation> inConfirms;
+    private List<Warehouseallocation> outConfirms;
 
     @Id
     @Column(name = "id")
@@ -253,6 +256,24 @@ public class JpaSysUser {
 
     public void setCustomertransfer1(List<Customertransfer> customertransfer1) {
         this.customertransfer1 = customertransfer1;
+    }
+
+    @OneToMany(mappedBy = "inUser")
+    public List<Warehouseallocation> getInConfirms() {
+        return inConfirms;
+    }
+
+    public void setInConfirms(List<Warehouseallocation> inConfirms) {
+        this.inConfirms = inConfirms;
+    }
+
+    @OneToMany(mappedBy = "outUser")
+    public List<Warehouseallocation> getOutConfirms() {
+        return outConfirms;
+    }
+
+    public void setOutConfirms(List<Warehouseallocation> outConfirms) {
+        this.outConfirms = outConfirms;
     }
 
     @Override
