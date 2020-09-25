@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *功能描述 入库业务接口SSssSSS
+ *功能描述 入库业务接口ssss
  * @author 廖湘明
  * @date 2020/9/22
  * @param
