@@ -64,6 +64,7 @@ public class Noties implements Serializable {
      */
     private String readUserIds;
 
+    private String createUserId;
 //    /**
 //     * 公告状态
 //     */
