@@ -97,4 +97,16 @@ public class ProductController {
     public ResultVo queryByStock(){
         return ResultUtils.success("查询成功",this.productService.queryByStock());
     }
+
+    /**
+     *功能描述 通过规格id查询产品
+     * @author 廖湘明
+     * @date 2020/9/24
+     * @param
+     * @return
+     */
+    @GetMapping("/findBySpeid")
+    public ResultVo findBySpeid(Integer speid){
+        return ResultUtils.success("查询成功",this.productService.findBySpeid(speid));
+    }
 }

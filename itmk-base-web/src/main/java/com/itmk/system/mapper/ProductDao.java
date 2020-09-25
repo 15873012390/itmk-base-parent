@@ -23,4 +23,6 @@ public interface ProductDao extends BaseMapper<Product> {
     public void insertProduct(Product product);
     //修改产品
     public void updateProduct(Product product);
+    //通过规格id查询产品
+    public Product findBySpeid(@Param("speid") Integer speid);
 }

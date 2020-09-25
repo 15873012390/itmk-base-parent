@@ -4,4 +4,7 @@
 
 <mapper namespace="com.itmk.system.mapper.SysUserMapper">
 
+    <select id="findById" resultType="com.itmk.system.entity.jpa.JpaSysUser">
+        select * from sys_user where id=#{id}
+    </select>
 </mapper>
