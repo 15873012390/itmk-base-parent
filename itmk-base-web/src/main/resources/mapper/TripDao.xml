@@ -123,6 +123,7 @@
       </if>
     </trim>
   </insert>
+    <!---->
   <update id="updateByPrimaryKeySelective" parameterType="com.itmk.system.entity.Trip">
     update trip
     <set>

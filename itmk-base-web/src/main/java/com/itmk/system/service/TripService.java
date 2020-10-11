@@ -41,7 +41,7 @@ public interface TripService {
     int deleteByPrimaryKey(Integer tripId);
 
     /**
-     * 查询当天的所有日程
+     * 查询当天的所有 日程
      * @param trip_start_time
      * @return
      */

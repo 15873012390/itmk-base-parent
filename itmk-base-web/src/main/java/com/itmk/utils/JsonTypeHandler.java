@@ -27,7 +27,7 @@ public class JsonTypeHandler extends BaseTypeHandler<JSONArray> {
             return JSONObject.parseArray(sqlJson);
         }
         return null;
-    }
+    } 
 
     @Override
     public JSONArray getNullableResult(ResultSet resultSet, int i) throws SQLException {

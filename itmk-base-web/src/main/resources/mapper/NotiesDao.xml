@@ -209,7 +209,7 @@
     where msg_id = #{msgId,jdbcType=INTEGER}
   </update>
 
-<!--    修改审核-->
+<!--    修改审 核1-->
     <update id="updateState" parameterType="com.itmk.system.entity.Noties">
         update noties set state=2 where msg_id = #{msgId,jdbcType=INTEGER}
     </update>

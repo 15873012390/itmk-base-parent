@@ -67,7 +67,7 @@ public class Trip implements Serializable {
      * 地点
      */
     private String tripAddress;
-
+ 
     /**
      * 备注
      */

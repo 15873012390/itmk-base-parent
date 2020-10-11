@@ -12,7 +12,7 @@ public interface NotiesService {
     List<Noties> selectAll();
 
     /**
-     * 根据ID删除用户
+     * 根据 ID删除 用 户1
      * @param id
      * @return
      */

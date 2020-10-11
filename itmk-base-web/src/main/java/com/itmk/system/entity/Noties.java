@@ -2,9 +2,10 @@ package com.itmk.system.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+
 import com.alibaba.fastjson.JSONArray;
 import com.itmk.system.entity.jpa.JpaSysUser;
+
 import javax.persistence.*;
 
 /**
@@ -187,6 +188,7 @@ public class Noties implements Serializable {
     public void setDeptId(JSONArray deptId) {
         this.deptId = deptId;
     }
+
 
     public Noties() {
     }

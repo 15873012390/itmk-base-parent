@@ -18,7 +18,7 @@ public class NotiesServiceImpl  implements NotiesService {
     private NotiesDao notiesDao;
 
     /**
-     * 查询所有公告
+     * 查询所有公告1
      * @return
      */
     @Override

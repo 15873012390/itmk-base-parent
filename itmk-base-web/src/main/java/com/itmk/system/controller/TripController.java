@@ -32,7 +32,7 @@ public class TripController {
         return ResultUtils.success("插入成功",tripService.selectByTime(trip_start_time));
     }
     /**
-     *根据ID查询日程
+     *根据ID查询日程1
      * @param tripId
      * @return
      */
