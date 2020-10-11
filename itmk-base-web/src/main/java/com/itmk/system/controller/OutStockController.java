@@ -3,6 +3,7 @@ package com.itmk.system.controller;
 
 import com.itmk.result.ResultUtils;
 import com.itmk.result.ResultVo;
+import com.itmk.system.entity.Outstock;
 import com.itmk.system.service.OustStockService;
 import com.itmk.system.vo.OutStockAdvancedSearch;
 import lombok.extern.slf4j.Slf4j;
@@ -58,4 +59,63 @@ public class OutStockController {
     public ResultVo queryOutstockByAdvancedSearch(@RequestBody OutStockAdvancedSearch oas){
         return ResultUtils.success("查询成功",this.oustStockService.queryOutstockByAdvancedSearch(oas));
     }
+    /**
+     *功能描述 查询全部未出库
+     * @author 廖湘明
+     * @date 2020/10/11
+     * @param
+     * @return
+     */
+    @GetMapping("/queryAllNoOutStock")
+    public ResultVo queryAllNoOutStock(){
+        return ResultUtils.success("查询成功",this.oustStockService.queryAllNoOutStock());
+    }
+
+    /**
+     *功能描述 添加或编辑出库单
+     * @author 廖湘明
+     * @date 2020/10/11
+     * @param
+     * @return
+     */
+    @PostMapping("/editAndUpdateOutStock")
+    public ResultVo editAndUpdateOutStock(@RequestBody Outstock outstock){
+        this.oustStockService.editAndUpdateOutStock(outstock);
+        return ResultUtils.success("添加或编辑出库单");
+    }
+    /**
+     *功能描述 通过id查询
+     * @author 廖湘明
+     * @date 2020/10/11
+     * @param
+     * @return
+     */
+    @GetMapping("/queryOutstockByOutId")
+    public ResultVo queryOutstockByOutId(Integer outId){
+        return ResultUtils.success("通过id查询",this.oustStockService.queryOutstockByOutId(outId));
+    }
+    /**
+     *功能描述 通过id查询全部出库详情
+     * @author 廖湘明
+     * @date 2020/10/11
+     * @param
+     * @return
+     */
+    @GetMapping("/queryAllOutdetailById")
+    public ResultVo queryAllOutdetailById(Integer outId){
+        return ResultUtils.success("通过id查询全部出库详情",this.oustStockService.queryAllOutdetailById(outId));
+    }
+    /**
+     *功能描述 删除出库和详情
+     * @author 廖湘明
+     * @date 2020/10/11
+     * @param
+     * @return
+     */
+    @DeleteMapping("/deleteOutStockAndDetail")
+    public ResultVo deleteOutStockAndDetail(Integer outId){
+        this.oustStockService.deleteOutStockAndDetail(outId);
+        return ResultUtils.success("删除出库dan和详情");
+    }
+
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.system.mapper.UserDao">
+    
+    <resultMap id="userMap" type="com.itmk.system.entity.jpa.JpaSysUser">
+        <id property="id" column="id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="conImg" column="con_img"/>
+    </resultMap>
+    
+    <select id="queryAll" resultMap="userMap">
+        select id,nick_name from sys_user
+    </select>
+
+    <select id="queryByUid" resultMap="userMap">
+        select id,nick_name from sys_user where id=#{id}
+    </select>
+
+    <select id="queryByUserName" resultMap="userMap">
+        select id,nick_name from sys_user where nick_name=#{nick_name}
+    </select>
+
+    <select id="queryUserBySalesOpport" resultMap="userMap">
+            select u.id,u.nick_name,u.con_img
+            from sys_user u left join salesopport s
+            on u.id=s.u_id
+            <trim prefix="where" prefixOverrides="and">
+                <if test="timeStart!=null">
+                    and s.signing_time>=#{timeStart}
+                </if>
+                <if test="timeEnd!=null">
+                    and s.signing_time&lt;=#{timeEnd}
+                </if>
+                <if test="possibity!=null and possibity.length>0">
+                    and s.possibility=#{possibity}
+                </if>
+            </trim>
+            group by u.id
+    </select>
+
+
+    <select id="getAllUsrList" resultMap="userMap">
+        select u.id,u.nick_name,u.con_img from sys_user u
+        where u.dept_id=1
+    </select>
+
+</mapper>

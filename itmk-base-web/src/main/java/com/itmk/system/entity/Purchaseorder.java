@@ -17,10 +17,10 @@ public class Purchaseorder {
     private String pcoAddress;
     private String operator;
     private Integer deal;
-    /*@JsonIgnoreProperties("purchaseorder")
+    @JsonIgnoreProperties("purchaseorder")
     @NotFound(action= NotFoundAction.IGNORE)
     private Supplier supplier;
-    @JsonIgnoreProperties("purchaseorder")
+    /*@JsonIgnoreProperties("purchaseorder")
     @NotFound(action=NotFoundAction.IGNORE)
     private Audit audit;
     @JsonIgnoreProperties("purchaseorder")
@@ -105,7 +105,7 @@ public class Purchaseorder {
     }
 
 
-    /*@ManyToOne
+   @ManyToOne
     @JoinColumn(name="supplier_id",referencedColumnName = "supplier_id")
     public Supplier getSupplier() {
         return supplier;
@@ -115,7 +115,7 @@ public class Purchaseorder {
         this.supplier = supplier;
     }
 
-    @ManyToOne
+     /*@ManyToOne
     @JoinColumn(name="aud_id",referencedColumnName = "aud_id")
     public Audit getAudit() {
         return audit;

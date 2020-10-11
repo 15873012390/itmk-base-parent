@@ -1,7 +1,7 @@
 package com.itmk.system.entity.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.itmk.system.entity.Warehouseallocation;
+import com.itmk.system.entity.*;
 import com.itmk.system.entity.mybatis.Customer;
 import com.itmk.system.entity.mybatis.Customertransfer;
 
@@ -10,10 +10,15 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ *功能描述 用戶实体
+ * @author 廖湘明
+ * @date 2020/10/10
+ */
 @Entity
 @Table(name = "sys_user", schema = "itmk-system", catalog = "")
 public class JpaSysUser {
-    private long id;
+    private Integer id;
     private String username;
     private String password;
     private Integer isAccountNonExpired;
@@ -32,6 +37,8 @@ public class JpaSysUser {
     private String sex;
     private String conImg;
     private List<Customer> customer;
+    @JsonIgnoreProperties("user")
+    private List<Salesopport> salesopport;
     @JsonIgnoreProperties("user3")
     private List<Customertransfer> customertransfer3;
     @JsonIgnoreProperties("user2")
@@ -40,14 +47,24 @@ public class JpaSysUser {
     private List<Customertransfer> customertransfer1;
     private List<Warehouseallocation> inConfirms;
     private List<Warehouseallocation> outConfirms;
+    @JsonIgnoreProperties("user")
+    private List<Quote> quote;
+    /*   @JsonIgnoreProperties("user")*/
+    private List<Audit> audit;
+    @JsonIgnoreProperties("user")
+    private List<Backlogtask> backlogtask;
+    @JsonIgnoreProperties("user")
+    private List<Backlogtaskdetails> backlogtaskdetails;
+    private List<Orders> orders;
+    private List<Orderdetail> orderdetail;
 
     @Id
     @Column(name = "id")
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -230,6 +247,14 @@ public class JpaSysUser {
         this.customer = customer;
     }
 
+    @OneToMany(mappedBy = "user")
+    public List<Salesopport> getSalesopport() {
+        return salesopport;
+    }
+
+    public void setSalesopport(List<Salesopport> salesopport) {
+        this.salesopport = salesopport;
+    }
 
     @OneToMany(mappedBy = "user3")
     public List<Customertransfer> getCustomertransfer3() {
@@ -276,6 +301,56 @@ public class JpaSysUser {
         this.outConfirms = outConfirms;
     }
 
+    @OneToMany(mappedBy = "user")
+    public List<Quote> getQuote() {
+        return quote;
+    }
+
+    public void setQuote(List<Quote> quote) {
+        this.quote = quote;
+    }
+
+    @OneToMany(mappedBy = "user")
+    public List<Audit> getAudit() {
+        return audit;
+    }
+
+    public void setAudit(List<Audit> audit) {
+        this.audit = audit;
+    }
+    @OneToMany(mappedBy = "user")
+    public List<Backlogtask> getBacklogtask() {
+        return backlogtask;
+    }
+
+    public void setBacklogtask(List<Backlogtask> backlogtask) {
+        this.backlogtask = backlogtask;
+    }
+
+    @OneToMany(mappedBy = "user")
+    public List<Backlogtaskdetails> getBacklogtaskdetails() {
+        return backlogtaskdetails;
+    }
+
+    public void setBacklogtaskdetails(List<Backlogtaskdetails> backlogtaskdetails) {
+        this.backlogtaskdetails = backlogtaskdetails;
+    }
+    @OneToMany(mappedBy = "user")
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
+    @OneToMany(mappedBy = "user")
+    public List<Orderdetail> getOrderdetail() {
+        return orderdetail;
+    }
+
+    public void setOrderdetail(List<Orderdetail> orderdetail) {
+        this.orderdetail = orderdetail;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

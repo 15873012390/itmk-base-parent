@@ -3,6 +3,7 @@ package com.itmk.system.entity.mybatis;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.itmk.system.entity.*;
 import com.itmk.system.entity.jpa.JpaSysUser;
 
 import javax.persistence.*;
@@ -54,8 +55,16 @@ public class Customer {
     private JpaSysUser jpaSysUser;
     //联系人表
     private List<Contacts> contacts;
-
-
+    //销售机会表
+    private List<Salesopport> salesopport;
+    //报价表
+    private List<Quote> quote;
+    //待办任务表
+    private List<Backlogtask> backlogtask;
+    //订单表
+    private List<Orders> orders;
+    //订单明细表
+    private List<Orderdetail> orderdetail;
 
     @Id
     @Column(name = "cus_id")
@@ -268,7 +277,50 @@ public class Customer {
         this.contacts = contacts;
     }
 
-//    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer")
+    public List<Salesopport> getSalesopport() {
+        return salesopport;
+    }
+
+    public void setSalesopport(List<Salesopport> salesopport) {
+        this.salesopport = salesopport;
+    }
+    @OneToMany(mappedBy = "customer")
+    public List<Quote> getQuote() {
+        return quote;
+    }
+
+    public void setQuote(List<Quote> quote) {
+        this.quote = quote;
+    }
+    @OneToMany(mappedBy = "customer")
+    public List<Backlogtask> getBacklogtask() {
+        return backlogtask;
+    }
+
+    public void setBacklogtask(List<Backlogtask> backlogtask) {
+        this.backlogtask = backlogtask;
+    }
+
+    @OneToMany(mappedBy = "customer")
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
+
+    @OneToMany(mappedBy = "customer")
+    public List<Orderdetail> getOrderdetail() {
+        return orderdetail;
+    }
+
+    public void setOrderdetail(List<Orderdetail> orderdetail) {
+        this.orderdetail = orderdetail;
+    }
+
+    //    @OneToMany(mappedBy = "customer")
 //    public List<Customerchurnwarning> getCustomerchurnwarning() {
 //        return customerchurnwarning;
 //    }

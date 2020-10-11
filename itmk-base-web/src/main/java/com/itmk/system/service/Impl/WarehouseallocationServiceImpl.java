@@ -4,9 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itmk.system.entity.*;
 import com.itmk.system.entity.jpa.JpaSysUser;
-import com.itmk.system.mapper.InstockDao;
-import com.itmk.system.mapper.OutstockDao;
-import com.itmk.system.mapper.WarehouseallocationDao;
+import com.itmk.system.mapper.*;
+import com.itmk.system.mapper.jpa.JpaStockDao;
 import com.itmk.system.service.WarehouseallocationService;
 import com.itmk.system.vo.Pager;
 import com.itmk.system.vo.WarehouseallocationAdvancedSearchVo;
@@ -19,6 +18,7 @@ import uuid.UUIDUtil;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,12 +38,25 @@ public class WarehouseallocationServiceImpl implements WarehouseallocationServic
     private InstockDao instockDao;
     @Autowired
     private OutstockDao outstockDao;
+    @Autowired
+    private SysUserMapper userMapper;
+    @Autowired
+    private StockDao stockDao;
+    @Autowired
+    private JpaStockDao jpaStockDao;
     @Override
     public Pager<Warehouseallocation> selectWaByPage(Integer currentPage,Integer pageSize) {
-        PageHelper.startPage(currentPage,pageSize);
-        List<Warehouseallocation> list= this.warehouseallocationDao.selectWaByPage();
-        PageInfo<Warehouseallocation> pageInfo=new PageInfo<>(list);
-        return new Pager<Warehouseallocation>(pageInfo.getTotal(),pageInfo.getList());
+        List<Warehouseallocation> list1 = this.warehouseallocationDao.selectWaByPage();
+        List list2 = new ArrayList();
+        for (int i = 0; i < pageSize; i++) {
+            int index = (currentPage - 1) * pageSize + i;
+            if (index < list1.size()) {
+                if (list1.get(index) != null) {
+                    list2.add(list1.get(index));
+                }
+            }
+        }
+        return new Pager<Warehouseallocation>(list1.size(), list2);
     }
 
     @Override
@@ -283,6 +296,175 @@ public class WarehouseallocationServiceImpl implements WarehouseallocationServic
 
             }
 
+        }
+    }
+
+    /**
+     * 去入库出库确认
+     *
+     * @param waId
+     * @param type
+     * @param uId
+     */
+    public void toConfirm(Integer waId, Integer type, Integer uId) {
+        Warehouseallocation wa = this.warehouseallocationDao.queryWaByWaId(waId);
+        JpaSysUser user = this.userMapper.findById((long)uId);
+
+        if (type == 1) {
+            wa.setInUser(user);
+        }
+        if (type == 2) {
+            wa.setOutUser(user);
+        }
+        if (type == 3) {
+            user.setId(0);
+            wa.setInUser(user);
+        }
+        if (type == 4) {
+            user.setId(0);
+            wa.setOutUser(user);
+        }
+        this.warehouseallocationDao.updateWa(wa);
+    }
+
+    @Override
+    public String toOutAndInStock(Integer waId, String uName) {
+        Warehouseallocation wa = this.warehouseallocationDao.queryWaByWaId(waId);
+        if (wa != null) {
+            //出库不为空则相应往仓库加数据
+            if (wa.getOutstock() != null) {
+                Outstock outstock = outstockDao.queryOutstockByOutId(wa.getOutstock().getOutId());
+                boolean flag = false;
+                StringBuffer sb = new StringBuffer();
+                sb.append(wa.getOutwarehouse().getWarehouseName() + ":" + "<br/>" + "<br/>");
+                //用于保存符合要求的产品
+                List<Stock> stocks = new ArrayList<>();
+                Stock stock = null;
+                for (Outstockdetails outstockdetails : wa.getOutstock().getOutstockdetail()) {
+                    //所在的仓库不为空则修改原有的数量，否则新增。
+                    stock = this.stockDao.queryStockByWarehouseAndSpeId(outstockdetails.getProductspecification().getSpeId(), wa.getOutwarehouse().getWarehouseId());
+                    System.out.println("429"+stock);
+                    if (stock != null && stock.getStockId()!=0) {
+                        if (stock.getStockQuantity() >= outstockdetails.getOsdNumber()) {
+                            stock.setStockQuantity(stock.getStockQuantity() - outstockdetails.getOsdNumber());
+                            stock.setProductspecification(outstockdetails.getProductspecification());
+                            stock.setWarehouse(wa.getOutwarehouse());
+                            stocks.add(stock);
+                        } else {
+                            flag = true;
+                            sb.append(outstockdetails.getProductspecification().getProName() + "余量不足，无法进行调拨，请保证库存充足！" + "<br/>");
+                        }
+                    }else{
+                        flag = true;
+                        sb.append(outstockdetails.getProductspecification().getProName() + "余量不足，无法进行调拨，请保证库存充足！" + "<br/>");
+                    }
+                }
+                if (flag) {
+                    return sb.toString();
+                } else {
+                    outstock.setPassPerson(uName);
+                    outstock.setPassTime(new Timestamp(System.currentTimeMillis()));
+                    outstock.setStatus("已出库");
+                    outstockDao.updateOutStock(outstock);
+                    for (Stock s : stocks) {
+                        this.stockDao.updatestockQuantity(s.getStockQuantity(), s.getProductspecification().getSpeId(), s.getWarehouse().getWarehouseId());
+                    }
+                    //入库不为空则相应往仓库加数据
+                    if (wa.getInstock() != null) {
+                        Instock instock = instockDao.queryByInsId(wa.getInstock().getInsId());
+                        instock.setKeeper(uName);
+                        instock.setExecutionTime(new Timestamp(System.currentTimeMillis()));
+                        instock.setStatus("已入库");
+                        instockDao.updateInstock(instock);
+                        for (Instockdetail instockdetail : wa.getInstock().getInstockdetail()) {
+                            Stock stock2 = this.stockDao.queryStockByWarehouseAndSpeId(instockdetail.getProductspecification().getSpeId(), wa.getInwarehouse().getWarehouseId());
+                            if (stock2 != null && stock2.getStockId()!=0) {
+                                stock2.setStockQuantity(stock2.getStockQuantity() + instockdetail.getInsdQuantity());
+                                this.stockDao.updatestockQuantity(stock2.getStockQuantity(), instockdetail.getProductspecification().getSpeId(), wa.getInwarehouse().getWarehouseId());
+                            } else {
+                                Stock stock1 = new Stock();
+                                stock1.setProductspecification(instockdetail.getProductspecification());
+                                stock1.setWarehouse(instock.getWarehouse());
+                                stock1.setStockQuantity(instockdetail.getInsdQuantity());
+                                this.jpaStockDao.save(stock1);
+                            }
+                        }
+                    }
+                    wa.setWaStatus("已执行");
+                    this.warehouseallocationDao.updateWa(wa);
+                }
+            }
+
+        }
+
+        return "1";
+    }
+
+    @Override
+    public String removeWaStatus(Integer waId) {
+        Warehouseallocation wa = this.warehouseallocationDao.queryWaByWaId(waId);
+        boolean flag = false;
+        StringBuffer sb = new StringBuffer();
+        sb.append(wa.getInwarehouse().getWarehouseName() + ":" + "<br/>" + "<br/>");
+        List<Stock> stocks = new ArrayList<>();
+        Stock stock = null;
+        for (Instockdetail i : wa.getInstock().getInstockdetail()) {
+            stock = this.stockDao.queryStockByWarehouseAndSpeId(i.getProductspecification().getSpeId(), wa.getInwarehouse().getWarehouseId());
+            System.out.println("498"+stock);
+            if (stock != null) {
+                if (stock.getStockQuantity() >= i.getInsdQuantity()) {
+                    stock.setStockQuantity(stock.getStockQuantity() - i.getInsdQuantity());
+                    stock.setWarehouse(wa.getInwarehouse());
+                    stock.setProductspecification(i.getProductspecification());
+                    stocks.add(stock);
+                } else {
+                    flag = true;
+                    sb.append(i.getProductspecification().getProName() + "余量不足，无法进行调拨，请保证库存充足！" + "<br/>");
+                }
+            }else{
+                flag = true;
+                sb.append(i.getProductspecification().getProName() + "余量不足，无法进行调拨，请保证库存充足！" + "<br/>");
+            }
+        }
+        boolean flag3 = false;
+        boolean flag4 = false;
+        StringBuffer sb2 = new StringBuffer();
+        if (flag) {
+            return sb.toString();
+        } else {
+            JpaSysUser user = new JpaSysUser();
+            user.setId(0);
+            wa.setWaStatus("未执行");
+            wa.setInUser(user);
+            wa.setOutUser(user);
+            this.warehouseallocationDao.updateWa(wa);
+            Instock instock = instockDao.queryByInsId(wa.getInstock().getInsId());
+            instock.setStatus("未入库");
+            instock.setKeeper(null);
+            instock.setExecutionTime(null);
+            instockDao.updateInstock(instock);
+            for (Stock s : stocks) {
+                this.stockDao.updatestockQuantity(s.getStockQuantity(), s.getProductspecification().getSpeId(), s.getWarehouse().getWarehouseId());
+            }
+            Outstock outstock = outstockDao.queryOutstockByOutId(wa.getOutstock().getOutId());
+            outstock.setPassPerson(null);
+            outstock.setPassTime(null);
+            outstock.setStatus("未出库");
+            outstockDao.updateOutStock(outstock);
+            for (Outstockdetails outstockdetails : wa.getOutstock().getOutstockdetail()) {
+                Stock stock2 = this.stockDao.queryStockByWarehouseAndSpeId(outstockdetails.getProductspecification().getSpeId(), wa.getOutwarehouse().getWarehouseId());
+                if (stock2 != null && stock2.getStockId()!=0) {
+                    stock2.setStockQuantity(stock2.getStockQuantity() + outstockdetails.getOsdNumber());
+                    this.stockDao.updatestockQuantity(stock2.getStockQuantity(), outstockdetails.getProductspecification().getSpeId(), wa.getOutwarehouse().getWarehouseId());
+                } else {
+                    Stock stock1 = new Stock();
+                    stock1.setProductspecification(outstockdetails.getProductspecification());
+                    stock1.setWarehouse(wa.getOutwarehouse());
+                    stock1.setStockQuantity(outstockdetails.getOsdNumber());
+                    this.jpaStockDao.save(stock1);
+                }
+            }
+            return "1";
         }
     }
 }

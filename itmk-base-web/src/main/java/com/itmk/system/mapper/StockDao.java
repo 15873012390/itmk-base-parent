@@ -1,5 +1,6 @@
 package com.itmk.system.mapper;
 
+import com.itmk.system.entity.Instock;
 import com.itmk.system.entity.Stock;
 
 import com.itmk.system.entity.Warehouse;
@@ -30,4 +31,8 @@ public interface StockDao {
     public Stock queryStockByWarehouseAndSpeId(Integer speId,Integer warehouseId);
     //通过规格id查询库存
     public Stock queryQuantityBySpeId(Integer speId);
+    //修改库存数量
+    public void updatestockQuantity(Integer stockQuantity,Integer speId,Integer warehouseId);
+    //修改库存
+    public void updateInstock(Instock instock);
 }

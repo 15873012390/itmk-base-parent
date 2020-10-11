@@ -113,6 +113,13 @@
     <update id="removeStockisZero">
         update stock set stock_status = 0 where stock_quantity = 0
     </update>
+    <update id="updateInstock" parameterType="com.itmk.system.entity.Instock">
+        update instock set ins_id = #{insId},title =#{title},warehouse_id=#{warehouse.warehouseId},fill_time=#{fillTime},status=#{status},filler=#{filler},keeper=#{keeper}
+        ,execution_time=#{executionTime},pco_id=#{purchaseorder.pcoId},reg_id=#{returnedgoods.regId},supplier_id=#{supplier.supplierId},remarks=#{remarks},wa_id=#{warehouseallocation.waId} where ins_id =#{insId}
+    </update>
+    <update id="updatestockQuantity" >
+        update stock set stock_quantity = #{stockQuantity} where spe_id = #{speId} and warehouse_id =#{warehouseId}
+    </update>
     <!--通过仓库id和规格id查询库存-->
     <select id="queryStockByWarehouseAndSpeId" resultMap="stockMap">
         select * from stock s

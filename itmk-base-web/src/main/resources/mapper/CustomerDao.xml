@@ -271,8 +271,23 @@
         WHERE c.cus_id=#{cusId}
         order by c.cus_id desc
     </select>
+  <select id="queryAll" resultMap="customerMap2">
+    select cus.cus_id,cus.cus_name,
+        con.con_id,con.con_name,con.con_mobile
+        from customer cus
+        left join contacts con on cus.cus_id = con.cus_id
+  </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="queryContactByCusid" resultMap="customerMap2">
+        select cus.cus_id,cus.cus_name,
+        con.con_id,con.con_name,con.con_mobile
+        from customer cus
+        left join contacts con on cus.cus_id = con.cus_id
+        where cus.cus_id=#{cusid}
+    </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from customer
     where cus_id = #{cusId,jdbcType=INTEGER}
   </delete>

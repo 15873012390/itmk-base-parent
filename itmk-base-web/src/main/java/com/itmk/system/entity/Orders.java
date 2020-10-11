@@ -1,7 +1,8 @@
 package com.itmk.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.itmk.system.entity.jpa.JpaSysUser;
+import com.itmk.system.entity.mybatis.Customer;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -32,12 +33,12 @@ public class Orders {
 
     private List<Outstock> outstock;
     private Customer customer;
-    /*private User user;
+    private JpaSysUser user;
     private Quote quote;
-
+    private Address address;
     private List<Orderdetail> orderdetail;
 
-    private List<Sendout> sendout;*/
+    /*private List<Sendout> sendout;*/
 
     private List<Returnedgoods> returnedgoods;
 
@@ -277,8 +278,16 @@ public class Orders {
     public void setOutstock(List<Outstock> outstock) {
         this.outstock = outstock;
     }
+    @ManyToOne
+    @JoinColumn(name="u_id",referencedColumnName = "id")
+    public JpaSysUser getUser() {
+        return user;
+    }
 
-    /*@ManyToOne
+    public void setUser(JpaSysUser user) {
+        this.user = user;
+    }
+    @ManyToOne
     @JoinColumn(name="cus_id",referencedColumnName = "cus_id")
     public Customer getCustomer() {
         return customer;
@@ -288,15 +297,7 @@ public class Orders {
         this.customer = customer;
     }
 
-    @ManyToOne
-    @JoinColumn(name="u_id",referencedColumnName = "u_id")
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @ManyToOne
     @JoinColumn(name="quo_id",referencedColumnName = "quo_id")
@@ -317,7 +318,7 @@ public class Orders {
         this.orderdetail = orderdetail;
     }
 
-    @OneToMany(mappedBy = "orders")
+    /*@OneToMany(mappedBy = "orders")
     public List<Sendout> getSendout() {
         return sendout;
     }
@@ -361,6 +362,15 @@ public class Orders {
     public void setInvoice(List<Invoice> invoice) {
         this.invoice = invoice;
     }*/
+   @ManyToOne
+   @JoinColumn(name="add_id",referencedColumnName = "add_id")
+   public Address getAddress() {
+       return address;
+   }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     @Override
     public String toString() {

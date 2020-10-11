@@ -3,6 +3,7 @@ package com.itmk.system.mapper;
 import com.itmk.system.entity.Customer;
 import com.itmk.system.vo.AdvancedQueryCustomerDataVo;
 import com.itmk.system.vo.Pager;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,7 +22,10 @@ public interface CustomerDao {
 
     //查询所有客户
     List<Customer> queryAllCustomer();
-
+    //通过客户id查询联系人
+    public  com.itmk.system.entity.mybatis.Customer queryContactByCusid(@Param("cusid") Integer cusid);
+    //查询所有客户
+    public List<com.itmk.system.entity.mybatis.Customer> queryAll();
     /*查询更新时间在一周内的客户*/
     public List<Customer> queryCustomerByWeek();
     //查询更新时间一个月内的客户
