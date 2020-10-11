@@ -14,6 +14,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 产品管理控制器
  */
@@ -108,5 +110,16 @@ public class ProductController {
     @GetMapping("/findBySpeid")
     public ResultVo findBySpeid(Integer speid){
         return ResultUtils.success("查询成功",this.productService.findBySpeid(speid));
+    }
+    /**
+     *功能描述 选择产品页面
+     * @author 廖湘明
+     * @date 2020/9/28
+     * @param
+     * @return
+     */
+    @GetMapping("/findAllCla")
+    public ResultVo findAllCla(){
+        return ResultUtils.success("查询类别和产品成功",this.productService.findAllCla());
     }
 }

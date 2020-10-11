@@ -14,5 +14,6 @@ public interface ProductclassificationDao extends BaseMapper<Productclassificati
     public List<Productclassification> getAllProductClassification();
     //查询状态正常的全部分类
     public List<Productclassification> queryAllProductClassification();
-
+    //不连接库存 不显示服务类 产品选择
+    public List<Productclassification> findAll();
 }

@@ -12,6 +12,8 @@ public class Productspecification {
     private Integer speUnitConversion;
     private Product product;
     private List<Stock> stocks;
+    private List<Quotedetails> quotedetails;//报价单详情
+    private List<Orderdetail> orderdetails;
 
     @Id
     @Column(name = "spe_id")
@@ -81,6 +83,25 @@ public class Productspecification {
     public void setStocks(List<Stock> stocks) {
         this.stocks = stocks;
     }
+
+    @OneToMany(mappedBy = "productspecification",cascade = CascadeType.ALL)
+    public List<Quotedetails> getQuotedetails() {
+        return quotedetails;
+    }
+
+    public void setQuotedetails(List<Quotedetails> quotedetails) {
+        this.quotedetails = quotedetails;
+    }
+    @OneToMany(mappedBy = "productspecification",cascade = CascadeType.ALL)
+    public List<Orderdetail> getOrderdetails() {
+        return orderdetails;
+    }
+
+    public void setOrderdetails(List<Orderdetail> orderdetails) {
+        this.orderdetails = orderdetails;
+    }
+
+
     @Override
     public String toString() {
         return "Productspecification{" +

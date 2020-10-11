@@ -19,7 +19,7 @@ public class Supplier {
     private String supplierName;
     private String sex;
     private String phone;
-    /*private String job;
+    private String job;
     private String email;
     private String qq;
     private String weixin;
@@ -27,7 +27,7 @@ public class Supplier {
     @JsonIgnoreProperties("supplier")
     private List<Purchaseorder> purchaseorder;
     @JsonIgnoreProperties("supplier")
-    private List<Purchasereturn> purchasereturn;*/
+    private List<Purchasereturn> purchasereturn;
     @JsonIgnoreProperties("supplier")
     private List<Instock> instock;
 
@@ -71,7 +71,7 @@ public class Supplier {
         this.phone = phone;
     }
 
-   /* @Basic
+    @Basic
     @Column(name = "job")
     public String getJob() {
         return job;
@@ -125,7 +125,7 @@ public class Supplier {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        com.zktr.crmproject.pojos.Supplier supplier = (com.zktr.crmproject.pojos.Supplier) o;
+        Supplier supplier = (Supplier) o;
         return supplierId == supplier.supplierId &&
                 Objects.equals(supplierName, supplier.supplierName) &&
                 Objects.equals(sex, supplier.sex) &&
@@ -158,7 +158,7 @@ public class Supplier {
 
     public void setPurchasereturn(List<Purchasereturn> purchasereturn) {
         this.purchasereturn = purchasereturn;
-    }*/
+    }
 
     @OneToMany(mappedBy = "supplier",cascade = CascadeType.ALL)
     public List<Instock> getInstock() {

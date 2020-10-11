@@ -28,4 +28,14 @@ public interface InstockService {
     public Pager<Instock> querySelectAndInputByPage(String value, String input, String select,Integer currentPage,Integer pageSize);
     //高级查询
     public Pager<Instock> queryInstockByAdvancedSearch(InstockAdvancedSearchVo iad);
+    //新增入库
+    public void insertInstock(Instock instock);
+    //修改入库
+    public void updateInstock(Instock instock);
+    //通过id查询入库单
+    public Instock queryInstockByInsId(Integer insId);
+    //通过入库单查询入库详情
+    public List<Instockdetail> queryInstockDetailByInsId(Integer insId);
+    //删除入库单
+    public void deleteByInstockId(Integer instockId);
 }

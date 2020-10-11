@@ -107,4 +107,41 @@ public class WarehouseallocationController {
         this.warehouseallocationService.addAndEditWad(warehouseallocationdetailVo);
         return ResultUtils.success("操作成功");
     }
+    /**
+     *功能描述 执行库管确认操作
+     * @author 廖湘明
+     * @date 2020/9/26
+     * @param
+     * @return
+     */
+    @GetMapping("/toConfirm")
+    public ResultVo toConfirm(Integer waId,Integer type,Integer uId){
+        log.info("ssss"+waId+"sss"+uId);
+        this.warehouseallocationService.toConfirm(waId,type,uId);
+        return ResultUtils.success("操作成功");
+    }
+
+    /**
+     *功能描述 执行库存调拨操作
+     * @author 廖湘明
+     * @date 2020/9/26
+     * @param
+     * @return
+     */
+    @GetMapping("/toOutAndInStock")
+    public String toOutAndInStock(Integer waId,String uName){
+        return warehouseallocationService.toOutAndInStock(waId,uName);
+    }
+
+    /**
+     *功能描述 撤销库存调拨操作
+     * @author 廖湘明
+     * @date 2020/9/26
+     * @param
+     * @return
+     */
+    @GetMapping("/removeWaStatus")
+    public String removeWaStatus(Integer waId){
+        return warehouseallocationService.removeWaStatus(waId);
+    }
 }

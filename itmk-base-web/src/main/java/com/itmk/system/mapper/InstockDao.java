@@ -13,7 +13,7 @@ public interface InstockDao {
     public List<Instock> queryByWhId(String warehouseId);
     //查询所有入库
     public List<Instock> selectAllInstock();
-
+    //添加入库
     public void insertInstock(Instock instock);
     //通过id查询入库
     public Instock queryByInsId(Integer insId);

@@ -22,7 +22,7 @@ public interface WarehouseallocationDao {
     public List<Warehouseallocation> queryBySelectAndInput(String value,String input,String select);
     //插入调拨记录
     public void insertWa(Warehouseallocation warehouseallocation);
-
+    //修改调拨记录
     public void updateWa(Warehouseallocation warehouseallocation);
     //插入调拨记录详情
     public void insertWad(Warehouseallocationdetail warehouseallocationdetail);

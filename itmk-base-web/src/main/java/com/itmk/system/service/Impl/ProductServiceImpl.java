@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itmk.system.entity.Product;
+import com.itmk.system.entity.Productclassification;
 import com.itmk.system.entity.Productspecification;
+import com.itmk.system.mapper.ProductclassificationDao;
 import com.itmk.system.mapper.ProductspecificationDao;
 import com.itmk.system.mapper.StockDao;
 import com.itmk.system.mapper.jpa.LxmJpaProductDao;
@@ -30,6 +32,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao,Product> implemen
     private LxmJpaProductDao productJDao;
     @Autowired
     private ProductspecificationDao productspecificationDao;
+    @Autowired
+    private ProductclassificationDao productclassificationDao;
     @Autowired
     private StockDao stockDao;
     @Override
@@ -107,5 +111,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao,Product> implemen
     @Override
     public Product findBySpeid(Integer speid) {
         return this.productDao.findBySpeid(speid);
+    }
+
+    @Override
+    public List<Productclassification> findAllCla(){
+        return this.productclassificationDao.findAll();
     }
 }

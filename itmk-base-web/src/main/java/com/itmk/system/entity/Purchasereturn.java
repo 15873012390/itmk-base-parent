@@ -17,9 +17,9 @@ public class Purchasereturn {
     private String alterPerson;
     private Integer audId;
     private String remarks;
-   /* @JsonIgnoreProperties("purchasereturn")
-    private Supplier supplier;
     @JsonIgnoreProperties("purchasereturn")
+    private Supplier supplier;
+    /* @JsonIgnoreProperties("purchasereturn")
     private List<Pcrdetail> pcrdetail;
     @JsonIgnoreProperties("purchasereturn")
     private List<Paid> paid;*/
@@ -116,7 +116,7 @@ public class Purchasereturn {
         this.remarks = remarks;
     }
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name="supplier_id",referencedColumnName = "supplier_id")
     public Supplier getSupplier() {
         return supplier;
@@ -126,7 +126,7 @@ public class Purchasereturn {
         this.supplier = supplier;
     }
 
-    @OneToMany(mappedBy = "purchasereturn",cascade = CascadeType.ALL)
+    /*@OneToMany(mappedBy = "purchasereturn",cascade = CascadeType.ALL)
     public List<Pcrdetail> getPcrdetail() {
         return pcrdetail;
     }

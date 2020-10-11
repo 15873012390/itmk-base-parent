@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itmk.system.entity.Customer;
 import com.itmk.system.entity.Instock;
+import com.itmk.system.entity.Instockdetail;
 import com.itmk.system.entity.Product;
 import com.itmk.system.mapper.InstockDao;
 import com.itmk.system.mapper.ProductDao;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -96,5 +99,39 @@ public class InstockServiceImpl implements InstockService {
             }
         }
         return new Pager<Instock>(list.size(), list2);
+    }
+
+    @Override
+    public void insertInstock(Instock instock) {
+        if(instock.getTitle()==null||instock.getTitle()==""){
+            Date date = new Date();
+            //设置要获取到什么样的时间
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            //获取String类型的时间
+            String createdate = sdf.format(date);
+            instock.setTitle(createdate+"库存入库需求");
+        }
+        instock.setStatus("未入库");
+        this.instockDao.insertInstock(instock);
+    }
+
+    @Override
+    public void updateInstock(Instock instock) {
+        this.instockDao.updateInstock(instock);
+    }
+
+    @Override
+    public Instock queryInstockByInsId(Integer insId) {
+        return this.instockDao.queryByInsId(insId);
+    }
+
+    @Override
+    public List<Instockdetail> queryInstockDetailByInsId(Integer insId){
+        return this.instockDao.queryInstockDetailByInsId(insId);
+    }
+    @Override
+    public void deleteByInstockId(Integer instockId){
+        this.instockDao.deleteInstockById(instockId);
+        this.instockDao.deleteInstockDetailById(instockId);//删除入库详情
     }
 }

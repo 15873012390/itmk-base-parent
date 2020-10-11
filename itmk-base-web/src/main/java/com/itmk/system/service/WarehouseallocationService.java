@@ -28,4 +28,10 @@ public interface WarehouseallocationService {
     public void deleteWaByWaId(Integer waId);
     //仓库调拨单增加产品详情
     public void addAndEditWad(WarehouseallocationdetailVo warehouseallocationdetailVo);
+    //执行库管确认操作
+    public void toConfirm(Integer waId, Integer type, Integer uId);
+    //执行调库操作
+    public String toOutAndInStock(Integer waId, String uName);
+    //调拨辙销
+    public String removeWaStatus(Integer waId);
 }

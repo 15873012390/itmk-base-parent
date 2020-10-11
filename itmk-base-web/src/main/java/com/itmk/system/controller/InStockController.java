@@ -2,6 +2,7 @@ package com.itmk.system.controller;
 
 import com.itmk.result.ResultUtils;
 import com.itmk.result.ResultVo;
+import com.itmk.system.entity.Instock;
 import com.itmk.system.service.InstockService;
 import com.itmk.system.vo.InstockAdvancedSearchVo;
 import com.itmk.system.vo.StockAdvancedSearchVo;
@@ -68,5 +69,64 @@ public class InStockController {
     @PostMapping("/queryInstockByAdvancedSearch")
     public ResultVo queryInstockByAdvancedSearch(@RequestBody InstockAdvancedSearchVo ias){
         return ResultUtils.success("查询成功",this.instockService.queryInstockByAdvancedSearch(ias));
+    }
+    /**
+     *功能描述 新增入库
+     * @author 廖湘明
+     * @date 2020/9/28
+     * @param
+     * @return
+     */
+    @PostMapping("/insertInstock")
+    public ResultVo insertInstock(@RequestBody Instock instock) {
+        this.instockService.insertInstock(instock);
+        return ResultUtils.success("新增入库成功");
+    }
+    /**
+     *功能描述 编辑入库
+     * @author 廖湘明
+     * @date 2020/9/28
+     * @param
+     * @return
+     */
+    @PutMapping("/updateInstock")
+    public ResultVo updateInstock(@RequestBody Instock instock){
+        this.instockService.updateInstock(instock);
+        return ResultUtils.success("编辑入库成功");
+    }
+    /**
+     *功能描述 通过id查询入库
+     * @author 廖湘明
+     * @date 2020/9/28
+     * @param
+     * @return
+     */
+    @GetMapping("/queryInstockByInstock")
+    public ResultVo queryInstockByInstock(Integer insId){
+        return ResultUtils.success("查询入库成功",this.instockService.queryInstockByInsId(insId));
+    }
+    /**
+     *功能描述 通过入库单查询入库详情
+     * @author 廖湘明
+     * @date 2020/9/28
+     * @param
+     * @return
+     */
+    @GetMapping("/queryInstockDetailByInsId")
+    public ResultVo queryInstockDetailByInsId(Integer insId){
+        return ResultUtils.success("查询入库详情成功",this.instockService.queryInstockDetailByInsId(insId));
+    }
+
+    /**
+     *功能描述 通过id删除入库单
+     * @author 廖湘明
+     * @date 2020/9/28
+     * @param
+     * @return
+     */
+    @DeleteMapping("/deleteByInstockId")
+    public ResultVo deleteByInstockId(Integer insId){
+        this.instockService.deleteByInstockId(insId);
+        return ResultUtils.success("删除入库单成功");
     }
 }
