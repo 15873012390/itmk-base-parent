@@ -1,7 +1,6 @@
 package com.itmk.system.service;
 
 import com.itmk.system.entity.AddBook;
-import com.itmk.system.entity.SysUser;
 
 import java.util.List;
 
@@ -19,4 +18,6 @@ public interface AddBookService {
     public AddBook findAddBookByDname(AddBook record);
     //根据删除联系人
     public int deleteAddBookById(Integer id);
+
+    public int  updateAddKey(AddBook record);
 }

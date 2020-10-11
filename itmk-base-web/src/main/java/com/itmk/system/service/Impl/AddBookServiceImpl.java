@@ -43,5 +43,10 @@ public class AddBookServiceImpl implements AddBookService {
         return this.addBookDao.deleteAddBookById(id);
     }
 
+    @Override
+    public int updateAddKey(AddBook record) {
+        return this.addBookDao.updateAddKey(record);
+    }
+
 
 }

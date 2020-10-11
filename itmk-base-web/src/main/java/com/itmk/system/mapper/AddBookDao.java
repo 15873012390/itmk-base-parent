@@ -2,6 +2,7 @@ package com.itmk.system.mapper;
 
 import com.itmk.system.entity.AddBook;
 import com.itmk.system.entity.SysUser;
+import com.itmk.system.entity.Task;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
@@ -16,4 +17,6 @@ public interface AddBookDao {
     public AddBook findAddBookByDname(AddBook record);
 
     public int deleteAddBookById(Integer id);
+
+    public int  updateAddKey(AddBook record);
 }

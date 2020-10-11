@@ -1,17 +1,14 @@
-package com.itmk.system.entity;
+package com.itmk.system.vo;
 
 import lombok.Data;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.Date;
 
 /**
  * 任务实体类
  */
 @Data
-public class Task {
+public class QueryTaskVO {
 
     private int taskId;               //任务id
 
@@ -19,7 +16,7 @@ public class Task {
 
     private int createId;       //创建人id
 
-    private int mainId;        //负责人id
+    private String loginName;        //负责人id
 
     private Date createTime;   //新建时间
 

@@ -74,4 +74,10 @@ public class AddBookController {
     public ResultVo findAddBookByDname(AddBook record){
         return ResultUtils.success("查询成功",addBookService.findAddBookByDname(record));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateAddKey",method = RequestMethod.PUT)
+    public ResultVo updateAddKey(@RequestBody AddBook record){
+        return ResultUtils.success("更新成功",addBookService.updateAddKey(record));
+    }
 }

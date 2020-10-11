@@ -2,6 +2,7 @@ package com.itmk.system.controller;
 
 import com.itmk.result.ResultUtils;
 import com.itmk.result.ResultVo;
+import com.itmk.system.entity.AddBook;
 import com.itmk.system.entity.Task;
 import com.itmk.system.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class TaskController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "insertSelect",method = RequestMethod.GET)
+    @RequestMapping(value = "/insertSelect",method = RequestMethod.POST)
     public  ResultVo insertSelect(@RequestBody Task record ){
         return  ResultUtils.success("增加成功",taskService.insertSelect(record));
     }
@@ -57,10 +58,16 @@ public class TaskController {
      */
 
     @ResponseBody
-    @RequestMapping(value = "updateByPrimaryKey",method = RequestMethod.GET)
+    @RequestMapping(value = "updateByPrimaryKey",method = RequestMethod.PUT)
     public ResultVo updateByPrimaryKey(@RequestBody Task record){
         System.out.println("bbbbb");
         return ResultUtils.success("更新成功",taskService.updateByPrimaryKey(record));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/findTaskByName", method = RequestMethod.GET)
+    public ResultVo findAddBookByDname(Task record){
+        return ResultUtils.success("查询成功",taskService.findTaskByName(record));
     }
 
 }

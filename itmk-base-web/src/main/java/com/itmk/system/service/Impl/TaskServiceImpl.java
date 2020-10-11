@@ -3,6 +3,7 @@ package com.itmk.system.service.Impl;
 import com.itmk.system.entity.Task;
 import com.itmk.system.mapper.TaskDao;
 import com.itmk.system.service.TaskService;
+import com.itmk.system.vo.QueryTaskVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,7 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TaskDao taskDao;
     @Override
-    public List<Task> getTaskList() {
+    public List<QueryTaskVO> getTaskList() {
         return taskDao.getTaskList();
     }
 
@@ -33,4 +34,11 @@ public class TaskServiceImpl implements TaskService {
     public int updateByPrimaryKey(Task record) {
         return taskDao.updateByPrimaryKey(record);
     }
+
+    @Override
+    public List<Task> findTaskByName(Task record) {
+        return taskDao.findTaskByName(record);
+    }
+
+
 }
