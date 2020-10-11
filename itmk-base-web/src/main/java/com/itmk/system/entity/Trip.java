@@ -3,6 +3,8 @@ package com.itmk.system.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,7 @@ public class Trip implements Serializable {
     /**
      * 日程ID
      */
+    @TableId
     private Integer tripId;
 
     /**
@@ -58,7 +61,7 @@ public class Trip implements Serializable {
     /**
      * 参与人 
      */
-    private String tripAttend;
+    private JSONArray tripAttend;
 
     /**
      * 地点

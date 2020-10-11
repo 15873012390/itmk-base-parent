@@ -6,19 +6,44 @@ import java.util.List;
 
 public interface TripService {
 
-//    添加日程
+    /**
+     * 添加日程
+     * @param record
+     * @return
+     */
     int insert(Trip record);
 
-//查询日程
+    /**
+     * 根据ID查询日程
+     * @param tripId
+     * @return
+     */
     Trip selectByPrimaryKey(Integer tripId);
-//查询所有日程
+
+    /**
+     * 查询所有日程
+     * @return
+     */
     List<Trip> selectAll();
 
-////    查询所有日程
-//    List<Trip> selectAll();
-////    新建日程
-//    int insertSelective(Trip record);
-////更改日程
-//    int updateByPrimaryKeySelective(Trip record);
+    /**
+     * 根据ID修改日程
+     * @param tripId
+     * @return
+     */
+    int updateByPrimaryKey(Trip tripId);
 
+    /**
+     * 删除日程
+     * @param tripId
+     * @return
+     */
+    int deleteByPrimaryKey(Integer tripId);
+
+    /**
+     * 查询当天的所有日程
+     * @param trip_start_time
+     * @return
+     */
+    List<Trip> selectByTime(String trip_start_time);
 }

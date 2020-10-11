@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtdtripAttend/mybatis-3-mapper.dtd">
 <mapper namespace="com.itmk.system.mapper.TripDao">
   <resultMap id="BaseResultMap" type="com.itmk.system.entity.Trip">
     <id column="trip_id" jdbcType="INTEGER" property="tripId" />
@@ -10,7 +10,7 @@
     <result column="trip_create_time" jdbcType="TIMESTAMP" property="tripCreateTime" />
     <result column="trip_update_time" jdbcType="TIMESTAMP" property="tripUpdateTime" />
     <result column="trip_type" jdbcType="INTEGER" property="tripType" />
-    <result column="trip_attend" jdbcType="VARCHAR" property="tripAttend" />
+    <result column="trip_attend" typeHandler="com.itmk.utils.JsonTypeHandler" property="tripAttend" />
     <result column="trip_address" jdbcType="VARCHAR" property="tripAddress" />
     <result column="trip_message" jdbcType="VARCHAR" property="tripMessage" />
   </resultMap>
@@ -18,6 +18,7 @@
     trip_id, trip_theme, trip_start_time, trip_end_time, trip_create_user, trip_create_time, 
     trip_update_time, trip_type, trip_attend, trip_address, trip_message
   </sql>
+<!--    根据ID查询  日程-->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -31,6 +32,16 @@
         from trip
     </select>
 
+<!--        查询当天日程-->
+    <select id="selectByTime" resultType="com.itmk.system.entity.Trip">
+        SELECT * FROM trip where trip_start_time&lt;=DATE_SUB(now(), INTERVAL 1 week) and trip_start_time&gt;now();
+
+
+
+
+
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from trip
     where trip_id = #{tripId,jdbcType=INTEGER}
@@ -42,7 +53,7 @@
       trip_message)
     values (#{tripTheme,jdbcType=VARCHAR}, #{tripStartTime,jdbcType=TIMESTAMP}, #{tripEndTime,jdbcType=TIMESTAMP}, 
       #{tripCreateUser,jdbcType=INTEGER}, #{tripCreateTime,jdbcType=TIMESTAMP}, #{tripUpdateTime,jdbcType=TIMESTAMP}, 
-      #{tripType,jdbcType=INTEGER}, #{tripAttend,jdbcType=VARCHAR}, #{tripAddress,jdbcType=VARCHAR}, 
+      #{tripType,jdbcType=INTEGER}, #{tripAttend,typeHandler=com.itmk.utils.JsonTypeHandler}, #{tripAddress,jdbcType=VARCHAR},
       #{tripMessage,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="trip_id" keyProperty="tripId" parameterType="com.itmk.system.entity.Trip" useGeneratedKeys="true">
@@ -102,7 +113,7 @@
         #{tripType,jdbcType=INTEGER},
       </if>
       <if test="tripAttend != null">
-        #{tripAttend,jdbcType=VARCHAR},
+        #{tripAttend,typeHandler=com.itmk.utils.JsonTypeHandler},
       </if>
       <if test="tripAddress != null">
         #{tripAddress,jdbcType=VARCHAR},
@@ -137,7 +148,7 @@
         trip_type = #{tripType,jdbcType=INTEGER},
       </if>
       <if test="tripAttend != null">
-        trip_attend = #{tripAttend,jdbcType=VARCHAR},
+        trip_attend = #{tripAttend,typeHandler=com.itmk.utils.JsonTypeHandler},
       </if>
       <if test="tripAddress != null">
         trip_address = #{tripAddress,jdbcType=VARCHAR},
@@ -157,7 +168,7 @@
       trip_create_time = #{tripCreateTime,jdbcType=TIMESTAMP},
       trip_update_time = #{tripUpdateTime,jdbcType=TIMESTAMP},
       trip_type = #{tripType,jdbcType=INTEGER},
-      trip_attend = #{tripAttend,jdbcType=VARCHAR},
+      trip_attend = #{tripAttend,typeHandler=com.itmk.utils.JsonTypeHandler},
       trip_address = #{tripAddress,jdbcType=VARCHAR},
       trip_message = #{tripMessage,jdbcType=VARCHAR}
     where trip_id = #{tripId,jdbcType=INTEGER}

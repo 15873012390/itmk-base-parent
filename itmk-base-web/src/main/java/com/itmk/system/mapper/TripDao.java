@@ -1,5 +1,6 @@
 package com.itmk.system.mapper;
 
+import com.itmk.system.entity.Noties;
 import com.itmk.system.entity.Trip;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,6 +16,8 @@ public interface TripDao {
      */
     int deleteByPrimaryKey(Integer tripId);
 
+
+
     /**
      * 新增日程
      * @param record
@@ -25,17 +28,32 @@ public interface TripDao {
 
     int insertSelective(Trip record);
 
-
+    /**
+     * 根据ID查询
+     * @param tripId
+     * @return
+     */
     Trip selectByPrimaryKey(Integer tripId);
+
+    /**
+     * 查询当天所有日程
+     * @param trip_start_time
+     * @return
+     */
+    List<Trip> selectByTime(String trip_start_time);
 
 
     int updateByPrimaryKeySelective(Trip record);
-
-    int updateByPrimaryKey(Trip record);
+    /**
+     * 根据ID修改日程
+     * @param tripId
+     * @return
+     */
+    int updateByPrimaryKey(Trip tripId);
 
     /**
      * 查询所有
      * @return
      */
     List<Trip> selectAll();
-    }
+}

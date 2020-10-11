@@ -16,54 +16,57 @@ public class TripController {
     private TripService tripService;
 
     /**
-     * 插入公告
+     * 插入日程
      * @param trip
      * @return
      */
-
     @RequestMapping(value = "/insertTrip",method = RequestMethod.POST)
     public ResultVo insert(@RequestBody Trip trip){
-        log.info("插入成功");
         return ResultUtils.success("插入成功",tripService.insert(trip));
     }
 
-//    @RequestMapping(value = "/select_by_Id",method = RequestMethod.POST)
-//    public ResultVo select_by_Id(Integer integer){
-//        return ResultUtils.success("查询成功",tripService.selectByPrimaryKey(integer));
-//    }
-//
 
-    @RequestMapping(value = "/selectAll",method = RequestMethod.POST)
-    public ResultVo selectAll(){
-        log.info("查询成功");
-        return ResultUtils.success("查询成功",tripService.selectAll());
+    @RequestMapping(value = "/selectTime",method = RequestMethod.GET)
+    public ResultVo selectTime(String trip_start_time){
+        log.info("时间段"+trip_start_time);
+        return ResultUtils.success("插入成功",tripService.selectByTime(trip_start_time));
     }
     /**
-//     * 查询日程
-//     * @return
-//     */
-//    @RequestMapping(value = "/selectAll",method = RequestMethod.POST)
-//    public ResultVo selectAll(){
-//        return ResultUtils.success("插入成功",tripService.selectAll());
-//    }
-//
-//    /**
-//     * 插入成功
-//     * @param trip
-//     * @return
-//     */
-//    @RequestMapping(value = "/insertTrip",method = RequestMethod.POST)
-//    public ResultVo insertTrip(@RequestBody Trip trip){
-//        return ResultUtils.success("插入成功",tripService.insertSelective(trip));
-//    }
-//
-//    /**
-//     * 更新成功
-//     * @param trip
-//     * @return
-//     */
-//    @RequestMapping(value = "/updateKey",method = RequestMethod.POST)
-//    public ResultVo updateKey(Trip trip){
-//        return ResultUtils.success("更新成功",+tripService.updateByPrimaryKeySelective(trip));
-//    }
+     *根据ID查询日程
+     * @param tripId
+     * @return
+     */
+    @GetMapping("/select_ById")
+    public ResultVo select_By_Id(Integer tripId){
+        return ResultUtils.success("查询成功",tripService.selectByPrimaryKey(tripId));
+    }
+
+    /**
+     * 查询所有日程
+     * @return
+     */
+    @RequestMapping(value = "/selectAll",method = RequestMethod.POST)
+    public ResultVo selectAll(){
+        return ResultUtils.success("查询成功",tripService.selectAll());
+    }
+
+    /**
+     * 更新日程
+     * @param tripId
+     * @return
+     */
+    @RequestMapping(value = "/updateById",method = RequestMethod.POST)
+    public  ResultVo updateById(@RequestBody Trip tripId){
+        return ResultUtils.success("更新成功"+tripService.updateByPrimaryKey(tripId));
+    }
+
+    /**
+     * 根据ID删除日程
+     * @param tripId
+     * @return
+     */
+    @RequestMapping(value = "/delectById",method = RequestMethod.DELETE)
+    public  ResultVo delectById(Integer tripId){
+        return ResultUtils.success("删除成功"+tripService.deleteByPrimaryKey(tripId));
+    }
 }

@@ -5,48 +5,88 @@
     <id column="msg_id" jdbcType="INTEGER" property="msgId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="message" jdbcType="VARCHAR" property="message" />
-    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
-    <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+    <result column="dept_id" typeHandler="com.itmk.utils.JsonTypeHandler" property="deptId"/>
     <result column="depart_id" jdbcType="VARCHAR" property="departId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
     <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
     <result column="read_user_ids" jdbcType="VARCHAR" property="readUserIds" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+      <association property="createUser" javaType="com.itmk.system.entity.jpa.JpaSysUser">
+
+          <id column="id" property="id"></id>
+          <result column="username" property="username"></result>
+          <result column="nick_name" property="nickName"></result>
+          <result column="login_name" property="loginName"></result>
+          <result column="con_img" property="conImg"></result>
+      </association>
+<!--      <collection property="notiesDept" javaType="com.itmk.system.entity.Department">-->
+<!--&lt;!&ndash;            部门ID&ndash;&gt;-->
+<!--          <id column="id" property="id"></id>-->
+<!--&lt;!&ndash;            部门名称&ndash;&gt;-->
+<!--          <result column="name" property="name"></result>-->
+<!--&lt;!&ndash;           上级部门名称&ndash;&gt;-->
+<!--          <result column="parentName" property="parentName"></result>-->
+<!--&lt;!&ndash;          部门经理&ndash;&gt;-->
+<!--          <result column="manager" property="manager"></result>-->
+<!--      </collection>-->
   </resultMap>
-  <sql id="Base_Column_List">
-    msg_id, title, message, create_user_id, dept_id, depart_id, create_time, update_time, 
-    start_date, end_date, read_user_ids
-  </sql>
+
 <!--    根据ID查询公告-->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from noties
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+     select * from
+        noties n
+        left join sys_user u
+        on n.create_user_id=u.id
     where msg_id = #{msgId,jdbcType=INTEGER}
   </select>
 
 <!--    查询所有公告-->
-    <select id="selectAll" resultType="com.itmk.system.entity.Noties">
-        select
-        <include refid="Base_Column_List"/>
-        from noties
+    <select id="selectAll" resultType="com.itmk.system.entity.Noties" resultMap="BaseResultMap">
+       select * from
+        noties n
+        left join sys_user u
+        on n.create_user_id=u.id
     </select>
-<!--    根据ID删除公告-->
+<!--    查询公告状态 审核中-->
+    <select id="selectState" resultType="com.itmk.system.entity.Noties" resultMap="BaseResultMap">
+       select * from
+        noties n
+        left join sys_user u
+        on n.create_user_id=u.id
+        where n.state= 1
+    </select>
+<!--    查询状态 已结束-->
+    <select id="selectendState"  resultMap="BaseResultMap">
+       select * from
+        noties n left join sys_user u
+        on n.create_user_id=u.id
+        where n.state= 2
+    </select>
+
+    <!--    根据时间段查询-->
+    <select id="selectTime" resultType="com.itmk.system.entity.Noties">
+        select * from noties where
+        create_time between  #{start_date} and #{end_date}
+        GROUP BY create_time
+        ORDER BY create_time
+    </select>
+    <!--    根据ID删除公告-->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from noties
     where msg_id = #{msgId,jdbcType=INTEGER}
   </delete>
 <!--    插入公告-->
   <insert id="insert" keyColumn="msg_id" keyProperty="msgId" parameterType="com.itmk.system.entity.Noties" useGeneratedKeys="true">
-    insert into noties (title, message, create_user_id, 
-      dept_id, depart_id, create_time, 
+    insert into noties (title, message, create_user_id,
+      dept_id, depart_id, create_time,
       update_time, start_date, end_date, 
-      read_user_ids)
-    values (#{title,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{createUserId,jdbcType=INTEGER}, 
-      #{deptId,jdbcType=VARCHAR}, #{departId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      read_user_ids,state)
+    values (#{title,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{createUser.id},
+      #{deptId,typeHandler=com.itmk.utils.JsonTypeHandler}, #{departId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
-      #{readUserIds,jdbcType=VARCHAR})
+      #{readUserIds,jdbcType=VARCHAR},#{state,jdbcType=INTEGER})
   </insert>
 
   <insert id="insertSelective" keyColumn="msg_id" keyProperty="msgId" parameterType="com.itmk.system.entity.Noties" useGeneratedKeys="true">
@@ -58,7 +98,7 @@
       <if test="message != null">
         message,
       </if>
-      <if test="createUserId != null">
+      <if test="createUser.id != null">
         create_user_id,
       </if>
       <if test="deptId != null">
@@ -90,11 +130,11 @@
       <if test="message != null">
         #{message,jdbcType=VARCHAR},
       </if>
-      <if test="createUserId != null">
-        #{createUserId,jdbcType=INTEGER},
+      <if test="createUser.id != null">
+        #{createUser.id},
       </if>
       <if test="deptId != null">
-        #{deptId,jdbcType=VARCHAR},
+        #{deptId,typeHandler=com.itmk.utils.JsonTypeHandler},
       </if>
       <if test="departId != null">
         #{departId,jdbcType=VARCHAR},
@@ -125,11 +165,11 @@
       <if test="message != null">
         message = #{message,jdbcType=VARCHAR},
       </if>
-      <if test="createUserId != null">
-        create_user_id = #{createUserId,jdbcType=INTEGER},
+      <if test="createUser.id != null">
+        create_user_id = #{createUser.id},
       </if>
       <if test="deptId != null">
-        dept_id = #{deptId,jdbcType=VARCHAR},
+        dept_id = #{deptId,typeHandler=com.itmk.utils.JsonTypeHandler},
       </if>
       <if test="departId != null">
         depart_id = #{departId,jdbcType=VARCHAR},
@@ -152,18 +192,25 @@
     </set>
     where msg_id = #{msgId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.itmk.system.entity.Noties">
+<!--    根据ID修改公告-->
+  <update id="updateByPrimaryKey" parameterType="com.itmk.system.entity.Noties" >
     update noties
     set title = #{title,jdbcType=VARCHAR},
       message = #{message,jdbcType=VARCHAR},
-      create_user_id = #{createUserId,jdbcType=INTEGER},
-      dept_id = #{deptId,jdbcType=VARCHAR},
+      create_user_id = #{createUser.id},
+      dept_id = #{deptId,typeHandler=com.itmk.utils.JsonTypeHandler},
       depart_id = #{departId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       start_date = #{startDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
-      read_user_ids = #{readUserIds,jdbcType=VARCHAR}
+      read_user_ids = #{readUserIds,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER}
     where msg_id = #{msgId,jdbcType=INTEGER}
   </update>
+
+<!--    修改审核-->
+    <update id="updateState" parameterType="com.itmk.system.entity.Noties">
+        update noties set state=2 where msg_id = #{msgId,jdbcType=INTEGER}
+    </update>
 </mapper>
